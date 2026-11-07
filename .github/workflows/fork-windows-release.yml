@@ -1,0 +1,90 @@
+name: fork-windows-release
+
+# Bootstrap a Windows test release once when added to nx2; later runs are manual.
+# Full cross-platform builds can still use the upstream ci.yml workflow.
+on:
+  push:
+    branches: [nx2]
+    paths:
+      - .github/workflows/fork-windows-release.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fork-windows-release
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    runs-on: ubuntu-24.04
+    outputs:
+      sha: ${{ steps.version.outputs.sha }}
+      tag: ${{ steps.version.outputs.tag }}
+      skip: ${{ steps.version.outputs.skip }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Check version and existing release
+        id: version
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          [[ "$GITHUB_REF_NAME" == nx2 ]] || {
+            echo "Run this workflow from nx2 only." >&2
+            exit 1
+          }
+          version=$(tr -d '[:space:]' < VERSION)
+          regex='^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$'
+          [[ "$version" =~ $regex ]] || {
+            echo "This workflow only publishes numbered stable versions: $version" >&2
+            exit 1
+          }
+          notes=$(bash tools/ci/changelog-section.sh "$version")
+          [[ -n "$(printf '%s' "$notes" | tr -d '[:space:]')" ]] || {
+            echo "No release notes for version $version." >&2
+            exit 1
+          }
+          tag="v$version"
+          echo "sha=$GITHUB_SHA" >> "$GITHUB_OUTPUT"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          if gh release view "$tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1 ||
+             git ls-remote --exit-code --tags origin "refs/tags/$tag" >/dev/null 2>&1; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "$tag is already tagged or published; not rebuilding."
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+            echo "Publishing first Windows test build for $tag."
+          fi
+
+  windows:
+    needs: prepare
+    if: needs.prepare.outputs.skip != 'true'
+    uses: ./.github/workflows/build-windows.yml
+    with:
+      sha: ${{ needs.prepare.outputs.sha }}
+      version: ${{ needs.prepare.outputs.tag }}
+      refspec: ${{ needs.prepare.outputs.tag }}
+      tag: ${{ needs.prepare.outputs.tag }}
+      release: true
+      nightly: false
+      pgo: none
+
+  release:
+    needs: [prepare, windows]
+    if: needs.prepare.outputs.skip != 'true' && needs.windows.result == 'success'
+    permissions:
+      contents: write
+    uses: ./.github/workflows/release.yml
+    with:
+      kind: stable
+      tag: ${{ needs.prepare.outputs.tag }}
+      title: Eglantine-Framer ${{ needs.prepare.outputs.tag }} (test build)
+      prerelease: true
+      sha: ${{ needs.prepare.outputs.sha }}
+      branch: nx2
