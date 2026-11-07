@@ -21,6 +21,7 @@ New entries go under `## [Unreleased]`; `tools/ci/bump-version.sh` turns them in
 - Pokémon Pokopia compatibility is **not verified** in this fork. Please report startup, visual, audio, stability and performance problems, ideally with `eden_log.txt`, your GPU model, driver version and reproduction steps.
 - Test focus: booting into a saved game, correct environment geometry and textures, photo capture, visual stability, and avoiding black screens.
 - Testing guide and issue form: see `docs/POKOPIA_TESTING.md` for reproducible reports.
+- Vulkan fallback-buffer fix is a correctness change; Pokopia-specific improvements still require validation with this release.
 
 ## [0.1.0]
 
