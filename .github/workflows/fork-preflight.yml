@@ -47,3 +47,9 @@ jobs:
           set -euo pipefail
           test -s docs/POKOPIA_TESTING.md
           test -s .github/ISSUE_TEMPLATE/pokopia_bug.yml
+
+      - name: Validate Frameropia branding and package identifiers
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash tools/ci/check-frameropia-branding.sh
