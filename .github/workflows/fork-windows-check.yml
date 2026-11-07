@@ -7,6 +7,7 @@ on:
     paths:
       - .github/workflows/fork-windows-check.yml
       - .github/workflows/build-windows.yml
+      - src/CMakeLists.txt
       - src/yuzu/**
       - src/yuzu_cmd/**
       - src/qt_common/**
