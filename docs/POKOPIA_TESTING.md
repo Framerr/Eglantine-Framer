@@ -14,8 +14,8 @@ Report only what a specific build actually does, and keep each issue focused on 
 ## Get a test build
 
 1. Open [Actions → ci](https://github.com/Framerr/Frameropia/actions/workflows/ci.yml).
-2. Choose **Run workflow**, branch **nx2**, `kind: stable`, `platforms: windows`, `pgo: none`, and `publish: true`.
-3. Once a build succeeds and publishes, download the Windows ZIP from [Releases](https://github.com/Framerr/Frameropia/releases). Extract the whole archive and run `eglantine.exe` — do not run it from inside the ZIP.
+2. Select **main** and use the release workflow triggered by a new `VERSION` change. For manual builds, select `kind: stable`, `platforms: windows`, `pgo: none`, and `publish: true`.
+3. Once a build succeeds and publishes, download the Windows ZIP from [Releases](https://github.com/Framerr/Frameropia/releases). Extract the whole archive and run `frameropia.exe` (v0.0.2 and newer). The historical v0.0.1 ZIP instead contains `eglantine.exe`. Do not run executables from inside the ZIP.
 4. If the workflow or Windows build fails, report the workflow run URL instead of assuming the emulator binary exists.
 
 ## Smoke-test checklist

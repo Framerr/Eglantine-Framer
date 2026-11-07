@@ -38,13 +38,13 @@ Search the [open issues](https://github.com/Framerr/Frameropia/issues) and [pull
 Submit a pull request to [Framerr/Frameropia](https://github.com/Framerr/Frameropia). You need a GitHub account; the Eden Forgejo account registration process does not apply here.
 
 1. Fork the Frameropia repository to your GitHub account.
-2. Clone your fork and create a branch for your change based on Frameropia's `nx2` branch.
+2. Clone your fork and create a branch for your change based on Frameropia's `main` branch.
 3. Make a focused change, following the policies above and the [coding guidelines](docs/policies/Coding.md).
 4. Review and test your changes. For code changes, follow the [build documentation](docs/Build.md) for your platform and verify the affected behavior. For documentation changes, preview the Markdown and check the instructions and links.
 5. Commit your changes and push your branch to your fork.
-6. Open a pull request from your branch to `Framerr/Frameropia`, selecting `nx2` as the base branch. Explain the problem, the change, and how you verified it, and link any related issue.
+6. Open a pull request from your branch to `Framerr/Frameropia`, selecting `main` as the base branch. Explain the problem, the change, and how you verified it, and link any related issue.
 
-Before opening a pull request, make sure your branch is up-to-date with Frameropia's `nx2` branch. Follow the [AI policy](docs/policies/AI.md), including its requirements for human-written commit messages and pull request descriptions, disclosure, review, testing, and sign-off.
+Before opening a pull request, make sure your branch is up-to-date with Frameropia's `main` branch. Follow the [AI policy](docs/policies/AI.md), including its requirements for human-written commit messages and pull request descriptions, disclosure, review, testing, and sign-off.
 
 ## Non-code Contributions
 

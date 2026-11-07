@@ -39,17 +39,17 @@ fi
 # Manual stable releases use the same version/tag checks as a VERSION push.
 # They are useful for publishing after a fork has enabled GitHub Actions.
 if [[ "$mode" == workflow_dispatch && "${INPUT_KIND:-branch}" == stable ]]; then
-  [[ "${GITHUB_REF_NAME:-}" == nx2 ]] || {
-    echo "A manual stable release can only run from nx2" >&2
+  [[ "${GITHUB_REF_NAME:-}" == main ]] || {
+    echo "A manual stable release can only run from main" >&2
     exit 1
   }
   mode=push
 fi
 
-# A manual daily is allowed only from nx2 and bypasses the unchanged-commit check.
+# A manual daily is allowed only from main and bypasses the unchanged-commit check.
 if [[ "$mode" == workflow_dispatch && "${INPUT_KIND:-branch}" == daily ]]; then
-  [[ "${GITHUB_REF_NAME:-}" == nx2 ]] || {
-    echo "A manual daily build can only run from nx2" >&2
+  [[ "${GITHUB_REF_NAME:-}" == main ]] || {
+    echo "A manual daily build can only run from main" >&2
     exit 1
   }
   mode=schedule

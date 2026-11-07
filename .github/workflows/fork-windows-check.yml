@@ -3,7 +3,7 @@ name: fork-windows-check
 # Read-only Windows compilation check for source/build-system pull requests.
 on:
   pull_request:
-    branches: [nx2]
+    branches: [main]
     paths:
       - .github/workflows/fork-windows-check.yml
       - .github/workflows/build-windows.yml

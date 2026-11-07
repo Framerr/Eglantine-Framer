@@ -57,14 +57,14 @@ jobs:
           ref: ${{ github.event.repository.default_branch }}
           fetch-depth: 0
 
-      - name: Fetch build commit and nx2 history
+      - name: Fetch build commit and main history
         shell: bash
         env:
           TARGET_SHA: ${{ inputs.sha }}
         run: |
           set -euo pipefail
           git fetch --no-tags origin "$TARGET_SHA"
-          git fetch --no-tags origin nx2:refs/remotes/origin/nx2 || true
+          git fetch --no-tags origin main:refs/remotes/origin/main || true
           git cat-file -e "$TARGET_SHA^{commit}"
           # Release notes for stable/RC builds come from the exact source commit being released.
           # Reading the markdown is safe; the script generating the release remains trusted.

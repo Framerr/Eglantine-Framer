@@ -1,13 +1,12 @@
 name: fork-windows-release
 
-# Publish Windows test releases when VERSION changes on nx2; manual runs remain available.
+# Publish Windows test releases when VERSION changes on main; manual runs remain available.
 # Full cross-platform builds can still use the upstream ci.yml workflow.
 on:
   push:
-    branches: [nx2]
+    branches: [main]
     paths:
       - VERSION
-      - .github/workflows/fork-windows-release.yml
   workflow_dispatch:
 
 permissions:
@@ -36,8 +35,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          [[ "$GITHUB_REF_NAME" == nx2 ]] || {
-            echo "Run this workflow from nx2 only." >&2
+          [[ "$GITHUB_REF_NAME" == main ]] || {
+            echo "Run this workflow from main only." >&2
             exit 1
           }
           version=$(tr -d '[:space:]' < VERSION)
@@ -88,4 +87,4 @@ jobs:
       title: Frameropia ${{ needs.prepare.outputs.tag }} (test build)
       prerelease: true
       sha: ${{ needs.prepare.outputs.sha }}
-      branch: nx2
+      branch: main

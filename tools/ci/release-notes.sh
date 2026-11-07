@@ -46,13 +46,13 @@ commits() { git log --no-merges --pretty='- %s (`%h`)' "$@" 2>/dev/null | head -
       fi
       ;;
     daily)
-      printf 'Automatic daily build of `nx2` at `%s`.\n\n## Changes since the previous daily build\n\n' "$short"
+      printf 'Automatic daily build of `main` at `%s`.\n\n## Changes since the previous daily build\n\n' "$short"
       if [[ -n "${PREV_TAG:-}" ]]; then commits "$PREV_TAG..$sha"; else commits -n 30 "$sha"; fi
       printf '\n'
       ;;
     branch)
-      printf 'Test build of branch `%s` at `%s`.\n\n**This is not a release.** It is for testing, and the next push to the branch replaces it.\n\n## Commits on top of nx2\n\n' "${BRANCH:-?}" "$short"
-      commits "origin/nx2..$sha"
+      printf 'Test build of branch `%s` at `%s`.\n\n**This is not a release.** It is for testing, and the next push to the branch replaces it.\n\n## Commits on top of main\n\n' "${BRANCH:-?}" "$short"
+      commits "origin/main..$sha"
       printf '\n'
       ;;
     *)

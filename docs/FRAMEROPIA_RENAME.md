@@ -5,9 +5,12 @@ The GitHub repository has been renamed from `Framerr/Eglantine-Framer` to
 interface, executable files, packages and project links are now branded Frameropia.
 
 The repository originally used `nx2` as its default branch, like the upstream
-Eglantine project. A `main` branch can be created from the same history, but
-changing GitHub's default branch requires an owner to update **Settings → Branches**
-(or **Settings → General → Default branch**, depending on GitHub's interface).
+Eglantine project. The `main` branch has now been created from that same history. To complete the
+migration, the repository owner must change the default branch from `nx2` to
+`main` in **Settings → Branches** (or **Settings → General → Default branch**, depending on GitHub's interface).
+
+Future Frameropia development and release workflows target `main`. The older `nx2`
+branch remains as a historical reference and upstream comparison point.
 
 Target repository: `https://github.com/Framerr/Frameropia`
 
