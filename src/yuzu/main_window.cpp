@@ -420,7 +420,7 @@ MainWindow::MainWindow(bool has_broken_vulkan)
     default_theme_paths = QIcon::themeSearchPaths();
     UpdateUITheme();
 
-    SetDiscordEnabled(UISettings::values.enable_discord_presence.GetValue());
+    SetDiscordEnabled(false);
     discord_rpc->Update();
 
     play_time_manager = std::make_unique<PlayTime::PlayTimeManager>();
@@ -1300,7 +1300,7 @@ void MainWindow::InitializeHotkeys() {
     hotkey_registry.LoadHotkeys();
 
     LinkActionShortcut(ui->action_Load_File, QStringLiteral("Load File"));
-    LinkActionShortcut(ui->action_Exit, QStringLiteral("Exit Eglantine"));
+    LinkActionShortcut(ui->action_Exit, QStringLiteral("Exit Frameropia"));
     LinkActionShortcut(ui->action_Restart, QStringLiteral("Restart Emulation"));
     LinkActionShortcut(ui->action_Pause, QStringLiteral("Continue/Pause Emulation"));
     LinkActionShortcut(ui->action_Stop, QStringLiteral("Stop Emulation"));
@@ -1850,8 +1850,8 @@ bool MainWindow::LoadROM(const QString& filename, Service::AM::FrontendAppletPar
                                   tr("This is usually caused by outdated GPU drivers. "
                                      "Please see the log for more details. See: "
                                      "<a "
-                                     "href='https://git.eden-emu.dev/eden-emu/eden/src/branch/"
-                                     "master/docs/user/HowToAccessLogs.md'>"
+                                     "href='https://github.com/Framerr/Frameropia/blob/"
+                                     "nx2/docs/user/HowToAccessLogs.md'>"
                                      "How to access log files</a>."));
             break;
         default:
@@ -1865,7 +1865,7 @@ bool MainWindow::LoadROM(const QString& filename, Service::AM::FrontendAppletPar
                     tr("Error while loading ROM! %1", "%1 signifies a numeric error code.")
                         .arg(QString::fromStdString(error_code));
                 const auto description =
-                    tr("%1<br>Please redump your files or ask on Discord/Stoat for help.",
+                    tr("%1<br>Please redump your files or report the problem on the Frameropia GitHub issue tracker.",
                        "%1 signifies an error string.")
                         .arg(QString::fromStdString(
                             GetResultStatusString(static_cast<Loader::ResultStatus>(error_id))));
@@ -1933,7 +1933,7 @@ void MainWindow::BootGame(const QString& filename, Service::AM::FrontendAppletPa
     if (close_pending) {
         return;
     }
-    LOG_INFO(Frontend, "Eglantine starting...");
+    LOG_INFO(Frontend, "Frameropia starting...");
 
     if (params.program_id == 0 ||
         params.program_id > static_cast<u64>(Service::AM::AppletProgramId::MaxProgramId)) {
@@ -1976,7 +1976,7 @@ void MainWindow::BootGame(const QString& filename, Service::AM::FrontendAppletPa
                    "Vulkan, 1x resolution, GPU Fast, asynchronous shaders, BC3, conservative VRAM, "
                    "reactive flushing off, FIFO Relaxed VSync, handheld mode, ScaleForce, and "
                    "FXAA.\n\n"
-                   "They apply to Mario Kart World until Eglantine is closed. Your saved settings "
+                   "They apply to Mario Kart World until Frameropia is closed. Your saved settings "
                    "are not changed."),
                 QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::Yes;
         LOG_INFO(Config, "MKW recommended settings accepted: {}", use_recommended_mkw_settings);
@@ -1997,7 +1997,7 @@ void MainWindow::BootGame(const QString& filename, Service::AM::FrontendAppletPa
                    "Vulkan, 1x resolution, GPU Fast, asynchronous shaders, BC3, conservative VRAM, "
                    "reactive flushing on, FIFO Relaxed VSync, docked mode, ScaleForce, and "
                    "FXAA.\n\n"
-                   "They apply to Ocarina of Time until Eglantine is closed. Your saved settings "
+                   "They apply to Ocarina of Time until Frameropia is closed. Your saved settings "
                    "are not changed."),
                 QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::Yes;
         LOG_INFO(Config, "OOT recommended settings accepted: {}", use_recommended_oot_settings);
@@ -3361,7 +3361,7 @@ void MainWindow::OnOpenModsPage() {
 
 void MainWindow::OnOpenUserHandbook() {
     OpenURL(QUrl(QStringLiteral(
-        "https://git.eden-emu.dev/eden-emu/eden/src/branch/master/docs/user/README.md")));
+        "https://github.com/Framerr/Frameropia/blob/nx2/docs/user/README.md")));
 }
 
 void MainWindow::ToggleFullscreen() {
@@ -3588,7 +3588,6 @@ void MainWindow::ToggleShowGameName() {
 
 void MainWindow::OnConfigure() {
     const auto old_theme = UISettings::values.theme;
-    const bool old_discord_presence = UISettings::values.enable_discord_presence.GetValue();
     const auto old_language_index = Settings::values.language_index.GetValue();
     const bool old_gamemode = UISettings::values.enable_gamemode.GetValue();
 #ifdef __unix__
@@ -3651,9 +3650,6 @@ void MainWindow::OnConfigure() {
 
     if (UISettings::values.theme != old_theme) {
         UpdateUITheme();
-    }
-    if (UISettings::values.enable_discord_presence.GetValue() != old_discord_presence) {
-        SetDiscordEnabled(UISettings::values.enable_discord_presence.GetValue());
     }
     if (UISettings::values.enable_gamemode.GetValue() != old_gamemode) {
         SetGamemodeEnabled(UISettings::values.enable_gamemode.GetValue());
@@ -4911,7 +4907,7 @@ void MainWindow::OnCheckGraphicsBackend() {
         UISettings::values.gui_force_x11.SetValue(true);
         GraphicsBackend::SetForceX11(true);
         QMessageBox::information(this, tr("Restart Required"),
-                                 tr("Restart Eglantine to apply the X11 backend."));
+                                 tr("Restart Frameropia to apply the X11 backend."));
     }
 }
 #endif
@@ -5030,8 +5026,8 @@ bool MainWindow::ConfirmClose() {
         UISettings::values.confirm_before_stopping.GetValue() == ConfirmStop::Ask_Based_On_Game)
         return true;
 
-    const auto text = tr("Are you sure you want to close Eglantine?");
-    return question(this, tr("Eglantine"), text);
+    const auto text = tr("Are you sure you want to close Frameropia?");
+    return question(this, tr("Frameropia"), text);
 }
 
 void MainWindow::closeEvent(QCloseEvent* event) {
@@ -5137,7 +5133,7 @@ bool MainWindow::ConfirmChangeGame() {
 
     // Use custom question to link controller navigation
     return question(
-        this, tr("Eglantine"),
+        this, tr("Frameropia"),
         tr("Are you sure you want to stop the emulation? Any unsaved progress will be lost."),
         QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
 }
@@ -5147,10 +5143,10 @@ bool MainWindow::ConfirmForceLockedExit() {
         return true;
 
     const auto text =
-        tr("The currently running application has requested Eglantine to not exit.\n\n"
+        tr("The currently running application has requested Frameropia to not exit.\n\n"
            "Would you like to bypass this and exit anyway?");
 
-    return question(this, tr("Eglantine"), text);
+    return question(this, tr("Frameropia"), text);
 }
 
 void MainWindow::RequestGameExit() {
