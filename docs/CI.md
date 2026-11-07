@@ -50,6 +50,10 @@ The bump workflow does not merge the PR for you. The merge is the approval gate.
 
 The CI duplicate check refuses to publish a tag that already exists. It does **not** compare the new semantic version numerically with the latest release, so maintainers must keep version numbers moving forward. If a failed run did not create the release/tag, re-run the workflow after fixing the failure.
 
+## Windows build verification for pull requests
+
+The `fork-windows-check.yml` workflow validates Windows/MSVC compilations for source and build-system changes in pull requests to `nx2`. It uploads short-lived workflow artifacts and does **not** publish a release.
+
 ## Running a build manually
 
 Open Actions → `ci` → Run workflow. Select the branch to build and choose:

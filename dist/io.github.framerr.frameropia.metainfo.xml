@@ -28,10 +28,10 @@ SPDX-License-Identifier: CC0-1.0
   </keywords>
   <url type="homepage">https://github.com/Framerr/Frameropia</url>
   <url type="bugtracker">https://github.com/Framerr/Frameropia/issues</url>
-  <url type="faq">https://github.com/Framerr/Frameropiaabout</url>
+  <url type="faq">https://github.com/Framerr/Frameropia#downloads-and-testing</url>
   <url type="help">https://github.com/Framerr/Frameropia/blob/nx2/docs/user/README.md</url>
   <url type="vcs-browser">https://github.com/Framerr/Frameropia</url>
-  <url type="contribute">https://github.com/Framerr/Frameropia/eden-emu/eden</url>
+  <url type="contribute">https://github.com/Framerr/Frameropia</url>
   <launchable type="desktop-id">io.github.framerr.frameropia.desktop</launchable>
   <provides>
     <binary>frameropia</binary>

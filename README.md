@@ -12,6 +12,7 @@ It is based on [Eglantine](https://github.com/Djihads80/Eglantine), which in tur
 - [Pokopia compatibility checklist](docs/POKOPIA_TESTING.md)
 - [Report a Pokopia issue](https://github.com/Framerr/Frameropia/issues/new/choose)
 - [Patch notes](docs/releases/v0.0.1.md)
+- [Repository rename and data compatibility](docs/FRAMEROPIA_RENAME.md)
 
 Only use game files and console data that you have legally obtained. Do not upload games, firmware or console keys to issues.
 
