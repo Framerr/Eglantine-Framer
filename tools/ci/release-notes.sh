@@ -34,7 +34,16 @@ commits() { git log --no-merges --pretty='- %s (`%h`)' "$@" 2>/dev/null | head -
         echo "CHANGELOG.md has no non-empty [$core] section" >&2
         exit 1
       }
-      printf '%s\n\n' "$section"
+      # Use a version-specific patch note for this fork when available.
+      # The checked-out default branch provides the trusted release notes.
+      # The matching CHANGELOG section above is still required and validated.
+      fork_notes="docs/releases/${tag}.md"
+      if [[ "$repo" == "Framerr/Eglantine-Framer" && -s "$fork_notes" ]]; then
+        cat "$fork_notes"
+        printf '\n'
+      else
+        printf '%s\n\n' "$section"
+      fi
       ;;
     daily)
       printf 'Automatic daily build of `nx2` at `%s`.\n\n## Changes since the previous daily build\n\n' "$short"
