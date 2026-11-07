@@ -1,6 +1,6 @@
 # Eglantine CI and release guide
 
-This document describes the split GitHub Actions pipeline added with this change. It is not yet a live workflow until the files have been merged to the required branches and the repository settings below have been applied.
+This document describes the split GitHub Actions pipeline used by the fork. The workflow files live on `nx2` (the default branch). GitHub Actions must be enabled for the fork; commits made by automated integrations might not trigger a new run, so manual dispatch is available.
 
 ## What runs when
 
@@ -10,6 +10,7 @@ This document describes the split GitHub Actions pipeline added with this change
 | Scheduled run at 03:00 UTC daily                       | Latest `nx2` commit                                                   | Yes; skipped when the latest daily already points at that commit           |
 | Actions → `ci` → Run workflow, `kind: branch`          | The selected branch                                                   | Yes by default; can be disabled                                            |
 | Actions → `ci` → Run workflow, `kind: daily`           | `nx2` only, even if another branch is selected the run is rejected    | Yes by default; can be disabled                                            |
+| Actions → `ci` → Run workflow, `kind: stable`          | `nx2` only; reads its current `VERSION` and `CHANGELOG.md`            | Yes unless tag already exists or notes are empty; can be disabled          |
 | Same-repository PR with label `ci:build`               | PR head commit; rebuilt on synchronize/reopen                         | Yes, as a rolling branch pre-release                                       |
 | Fork PR                                                | No build from the base repository                                     | No; see “Forks” below                                                      |
 
@@ -53,7 +54,7 @@ The CI duplicate check refuses to publish a tag that already exists. It does **n
 
 Open Actions → `ci` → Run workflow. Select the branch to build and choose:
 
-- **kind**: `branch` for a test build, or `daily` for a forced daily build of `nx2` only.
+- **kind**: `branch` for a test build, `daily` for a forced daily build, or `stable` for the version in `nx2`. Both `daily` and `stable` require `nx2`.
 - **platforms**: `all`, `linux`, `windows`, or `macos`. A single-platform run produces a partial release with only that platform's assets.
 - **pgo**: `none` or `both`. For manual runs, `none` is the default. `both` adds PGO variants where supported (Linux x86_64/ARM64 and Windows MinGW); macOS has no PGO variant.
 - **publish**: enabled by default. Disable it to keep the build as workflow artifacts without creating/updating a GitHub release.
@@ -61,6 +62,8 @@ Open Actions → `ci` → Run workflow. Select the branch to build and choose:
 For automatic `nx2` version releases and scheduled daily builds, the workflow requests both PGO variants by default. Label-triggered PR builds default to non-PGO to keep test builds quicker.
 
 A manual `daily` run is restricted to the `nx2` ref. It forces a fresh daily build for that date; with `publish: true`, it replaces the existing `daily-YYYYMMDD` release for the same day.
+
+**Framerr fork v0.0.1:** With Actions enabled, choose `nx2` → `kind: stable` → `platforms: windows` → `pgo: none` → `publish: true` to compile and publish the Windows test binary as `v0.0.1`. Do not use the `branch` mode for a numbered stable release. The workflow skips if the `v0.0.1` tag/release already exists. GitHub Actions must allow the workflow's `contents: write` permission to publish assets.
 
 ## Pull request and branch builds
 

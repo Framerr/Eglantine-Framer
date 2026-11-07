@@ -28,6 +28,19 @@ It's written in C++ with portability in mind, with builds for Windows, Linux and
   <a href="#license">License</a>
 </p>
 
+## Framerr test fork
+
+This fork is an experimental workspace focused on improving **Pokémon Pokopia**
+compatibility. The current test version is **v0.0.1**; gameplay and graphical
+correctness are **not yet verified**.
+
+- [Pokopia test checklist and bug reporting](docs/POKOPIA_TESTING.md)
+- [CI builds and release guide](docs/CI.md)
+- [Download test releases](https://github.com/Framerr/Eglantine-Framer/releases)
+
+The emulator is based on [Eglantine](https://github.com/Djihads80/Eglantine).
+This fork's tests and changes should not be interpreted as upstream fixes.
+
 ## Compatibility
 
 The emulator is capable of running Mario Kart World at decent/full speed depending on specs and configurations, and Splatoon Raiders at variable performances
