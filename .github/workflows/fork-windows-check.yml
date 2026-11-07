@@ -12,6 +12,9 @@ on:
       - src/qt_common/**
       - src/core/launch_params.cpp
       - CMakeModules/**
+      - CMakeLists.txt
+      - dist/**
+      - tools/ci/**
   workflow_dispatch:
 
 permissions:

@@ -25,6 +25,10 @@ require src/yuzu/aboutdialog.ui 'https://github.com/Framerr/Frameropia'
 require src/yuzu/main_window.cpp 'https://github.com/Framerr/Frameropia'
 test -s dist/io.github.framerr.frameropia.desktop
 test -s dist/io.github.framerr.frameropia.metainfo.xml
+test -s dist/io.github.framerr.frameropia.xml
+require CMakeLists.txt 'dist/io.github.framerr.frameropia.desktop'
+require CMakeLists.txt 'dist/io.github.framerr.frameropia.metainfo.xml'
+require CMakeLists.txt 'dist/io.github.framerr.frameropia.xml'
 
 if grep -Eqi 'discord_group|toggle_discordrpc|discord\.gg|>Discord<' \
     src/yuzu/configuration/configure_web.ui src/yuzu/aboutdialog.ui; then
