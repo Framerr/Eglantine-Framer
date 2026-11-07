@@ -13,6 +13,9 @@ Eglantine is free, open-source, copyleft software, licensed under the terms of t
 
 ### Policies
 
+- **Use English for repository communication and documentation.** Write issue reports, pull requests, commit messages, changelogs, release notes, README updates, and new documentation in English. Keep new code comments and user-facing diagnostic messages in English where appropriate. Proper names, external quotations, and existing game translations are exceptions.
+- If working from a report in another language, provide an English summary so other contributors can reproduce and review the issue.
+
 - We are trialing a slightly relaxed AI policy to allow high-quality contributors to use AI *responsibly*. Please read our [detailed AI policy](docs/policies/AI.md) for more info.
 - Usage of any form of profanity or otherwise unsavory language is generally discouraged.
   - This is primarily because it rarely helps to actually understand what's going on.
