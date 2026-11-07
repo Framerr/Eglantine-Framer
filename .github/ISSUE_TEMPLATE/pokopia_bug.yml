@@ -1,0 +1,77 @@
+name: Pokémon Pokopia compatibility report
+description: Reproducible startup, graphics, gameplay, or performance issue in this fork
+title: "[Pokopia] "
+labels: ["game-bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for testing Pokémon Pokopia. Please report one problem per issue.
+        Avoid uploading game files, firmware, or keys. Check that logs do not contain private paths or names.
+  - type: input
+    id: build
+    attributes:
+      label: Emulator build
+      description: Release name and short commit SHA (for example v0.0.1 / abc1234)
+      placeholder: v0.0.1 / commit
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Problem category
+      options:
+        - Black screen or startup
+        - Crash or freeze
+        - Missing or flickering geometry
+        - Lighting, fog, shadows, or colors
+        - Photo or screenshot artifacts
+        - Audio or controls
+        - Performance or stutter
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: hardware
+    attributes:
+      label: GPU / driver / OS
+      placeholder: RTX 3060, NVIDIA driver 000.00, Windows 11
+    validations:
+      required: true
+  - type: input
+    id: game_version
+    attributes:
+      label: Game version and update
+      placeholder: Exact update/build if known
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Include the camera position, area, and any overlay or screen-sharing app if relevant
+      placeholder: |
+        1. Start the game
+        2. Load a save
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual result
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Log, screenshots, or video
+      description: Drag files here or add links; review logs for private information
+  - type: input
+    id: last_good
+    attributes:
+      label: Last known working build (if regression)
