@@ -152,7 +152,7 @@ VkBufferView Buffer::View(u32 offset, u32 size, VideoCore::Surface::PixelFormat 
             .buffer = *buffer,
             .format = MaxwellToVK::SurfaceFormat(*device, FormatType::Buffer, false, format).format,
             .offset = offset,
-            .range = size,
+            .range = is_null ? VK_WHOLE_SIZE : size,
         }),
     });
     return *views.back().handle;
@@ -807,7 +807,8 @@ vk::Buffer BufferCacheRuntime::CreateNullBuffer() {
         .flags = 0,
         .size = 4,
         .usage = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT |
-                 VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_INDIRECT_BUFFER_BIT,
+                 VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_INDIRECT_BUFFER_BIT |
+                 VK_BUFFER_USAGE_UNIFORM_TEXEL_BUFFER_BIT | VK_BUFFER_USAGE_STORAGE_TEXEL_BUFFER_BIT,
         .sharingMode = VK_SHARING_MODE_EXCLUSIVE,
         .queueFamilyIndexCount = 0,
         .pQueueFamilyIndices = nullptr,
