@@ -19,6 +19,7 @@ New entries go under `## [Unreleased]`; `tools/ci/bump-version.sh` turns them in
 - Vulkan: use `VK_WHOLE_SIZE` for null texel-buffer views rather than a zero-length view.
 - Vulkan: allow null buffers to be used for uniform and storage texel-buffer descriptors.
 - Pokémon Pokopia compatibility is **not verified** in this fork. Please report startup, visual, audio, stability and performance problems, ideally with `eden_log.txt`, your GPU model, driver version and reproduction steps.
+- Test focus: booting into a saved game, correct environment geometry and textures, photo capture, visual stability, and avoiding black screens.
 
 ## [0.1.0]
 
