@@ -58,11 +58,12 @@ jobs:
   prepare:
     name: Prepare scheme
     if: >-
-      github.event_name != 'pull_request' || (
+      (github.event_name != 'push' || github.repository != 'Framerr/Frameropia') &&
+      (github.event_name != 'pull_request' || (
         github.event.pull_request.head.repo.full_name == github.repository &&
         contains(github.event.pull_request.labels.*.name, 'ci:build') &&
         (github.event.action != 'labeled' || github.event.label.name == 'ci:build')
-      )
+      ))
     runs-on: ubuntu-24.04
     permissions:
       contents: read

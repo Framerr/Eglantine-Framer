@@ -1,12 +1,13 @@
 # Frameropia repository rename
 
-The public project name is **Frameropia**. The rebrand updates the emulator UI, its
-executables, packages, documentation, and project links. The *repository's name*
-is a GitHub account setting and cannot be changed by the source-code commits alone.
+The GitHub repository has been renamed from `Framerr/Eglantine-Framer` to
+[Framerr/Frameropia](https://github.com/Framerr/Frameropia). The emulator user
+interface, executable files, packages and project links are now branded Frameropia.
 
-After merging the rebrand, the repository owner should open
-`Settings → General → Repository name` and change
-`Eglantine-Framer` to `Frameropia`.
+The repository originally used `nx2` as its default branch, like the upstream
+Eglantine project. A `main` branch can be created from the same history, but
+changing GitHub's default branch requires an owner to update **Settings → Branches**
+(or **Settings → General → Default branch**, depending on GitHub's interface).
 
 Target repository: `https://github.com/Framerr/Frameropia`
 
