@@ -38,6 +38,8 @@ add_executable(yuzu-cmd
     ${OPENGL_SOURCES}
 )
 
+set_target_properties(yuzu-cmd PROPERTIES OUTPUT_NAME "frameropia-cli")
+
 target_link_libraries(yuzu-cmd PRIVATE common core input_common frontend_common video_core)
 if (ENABLE_OPENGL)
     target_link_libraries(yuzu-cmd PRIVATE glad)

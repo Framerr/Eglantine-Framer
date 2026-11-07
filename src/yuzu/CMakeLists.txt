@@ -244,7 +244,7 @@ add_executable(yuzu
     game/carousel.h game/carousel.cpp
 )
 
-set_target_properties(yuzu PROPERTIES OUTPUT_NAME "eglantine")
+set_target_properties(yuzu PROPERTIES OUTPUT_NAME "frameropia")
 
 # Shipped next to the executable: the NX2 switches a GUI launch cannot set another way. Read at
 # startup (LoadNx2Switches in main.cpp); a user copy in %APPDATA%\eden overrides it.
@@ -377,7 +377,7 @@ if (APPLE)
     if (CMAKE_GENERATOR MATCHES "Xcode")
         set(_icons "${_dist}/eglantine.icon")
 
-        set_target_properties(eden PROPERTIES
+        set_target_properties(yuzu PROPERTIES
             XCODE_ATTRIBUTE_ASSETCATALOG_COMPILER_APPICON_NAME eglantine
             MACOSX_BUNDLE_ICON_FILE eglantine
             # Also force xcode to manage signing for us.
