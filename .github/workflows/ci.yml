@@ -8,7 +8,7 @@ run-name: >-
 #
 #   push to nx2 touching VERSION   stable or rc release, aborted when that tag already exists
 #   schedule                       daily build of nx2, aborted when nothing changed since the last one
-#   workflow_dispatch              branch build of the chosen ref (or a forced daily, from nx2)
+#   workflow_dispatch              branch build, forced daily, or manual stable release from nx2
 #   pull_request + ci:build label  branch build of a same-repo PR, rebuilt on each push
 on:
   push:
@@ -22,9 +22,9 @@ on:
   workflow_dispatch:
     inputs:
       kind:
-        description: What to build (daily is only allowed from nx2)
+        description: What to build (daily and stable require nx2)
         type: choice
-        options: [branch, daily]
+        options: [branch, daily, stable]
         default: branch
       platforms:
         description: Which OS builds to run
@@ -94,6 +94,7 @@ jobs:
         shell: bash
         env:
           TARGET_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          INPUT_KIND: ${{ inputs.kind }}
         run: |
           set -euo pipefail
           if [ "$GITHUB_EVENT_NAME" = schedule ]; then
@@ -105,7 +106,8 @@ jobs:
           fi
           git cat-file -e "$sha^{commit}"
           # The VERSION file belongs to the source commit for a version-triggered push.
-          if [ "$GITHUB_EVENT_NAME" = push ]; then
+          if [ "$GITHUB_EVENT_NAME" = push ] ||
+             { [ "$GITHUB_EVENT_NAME" = workflow_dispatch ] && [ "$INPUT_KIND" = stable ]; }; then
             git show "$sha:VERSION" > VERSION
             git show "$sha:CHANGELOG.md" > CHANGELOG.md
           fi
