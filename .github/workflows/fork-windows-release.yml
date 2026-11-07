@@ -76,6 +76,10 @@ jobs:
       nightly: false
       pgo: none
 
+  # Keep the published test build tied to the complete Windows archive, including
+  # both renamed executables, NX2 runtime switches and Qt's Windows platform plugin.
+  # build-windows.yml checks the executables before uploading; release.yml verifies
+  # them again after packaging. The release must never use the old Eglantine binaries.
   release:
     needs: [prepare, windows]
     if: needs.prepare.outputs.skip != 'true' && needs.windows.result == 'success'
