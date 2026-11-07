@@ -6,14 +6,14 @@ run-name: >-
 # Entry point of every build. It decides what the run is (daily / rc / stable / branch), then calls
 # one reusable workflow per OS and a final one that publishes the GitHub release.
 #
-#   push to nx2 touching VERSION   stable or rc release, aborted when that tag already exists
-#   schedule                       daily build of nx2, aborted when nothing changed since the last one
-#   workflow_dispatch              branch build, forced daily, or manual stable release from nx2
+#   push to main touching VERSION   stable or rc release, aborted when that tag already exists
+#   schedule                       daily build of main, aborted when nothing changed since the last one
+#   workflow_dispatch              branch build, forced daily, or manual stable release from main
 #   pull_request + ci:build label  branch build of a same-repo PR, rebuilt on each push
 on:
   push:
     branches:
-      - nx2
+      - main
     paths:
       - VERSION
       - CHANGELOG.md
@@ -22,7 +22,7 @@ on:
   workflow_dispatch:
     inputs:
       kind:
-        description: What to build (daily and stable require nx2)
+        description: What to build (daily and stable require main)
         type: choice
         options: [branch, daily, stable]
         default: branch
@@ -51,7 +51,7 @@ permissions:
 concurrency:
   # Manual and scheduled daily builds share a group; PR and manual branch builds share a group
   # for the source branch so they cannot race while replacing the same rolling release.
-  group: ci-${{ (github.event_name == 'pull_request' && (github.event.pull_request.head.repo.full_name != github.repository || (github.event.action == 'labeled' && github.event.label.name != 'ci:build'))) && format('ignored-{0}', github.run_id) || (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.kind == 'daily')) && 'daily-nx2' || (github.event_name == 'pull_request' && format('branch-{0}', github.event.pull_request.head.ref)) || (github.event_name == 'workflow_dispatch' && format('branch-{0}', github.ref_name)) || format('release-{0}', github.ref) }}
+  group: ci-${{ (github.event_name == 'pull_request' && (github.event.pull_request.head.repo.full_name != github.repository || (github.event.action == 'labeled' && github.event.label.name != 'ci:build'))) && format('ignored-{0}', github.run_id) || (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.kind == 'daily')) && 'daily-main' || (github.event_name == 'pull_request' && format('branch-{0}', github.event.pull_request.head.ref)) || (github.event_name == 'workflow_dispatch' && format('branch-{0}', github.ref_name)) || format('release-{0}', github.ref) }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && inputs.kind != 'daily') }}
 
 jobs:
@@ -99,8 +99,8 @@ jobs:
         run: |
           set -euo pipefail
           if [ "$GITHUB_EVENT_NAME" = schedule ]; then
-            git fetch --no-tags origin nx2:refs/remotes/origin/nx2
-            sha=$(git rev-parse refs/remotes/origin/nx2)
+            git fetch --no-tags origin main:refs/remotes/origin/main
+            sha=$(git rev-parse refs/remotes/origin/main)
           else
             git fetch --no-tags origin "$TARGET_SHA"
             sha="$TARGET_SHA"

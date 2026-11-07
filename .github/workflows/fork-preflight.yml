@@ -3,9 +3,9 @@ name: fork-preflight
 # Fast, read-only validation. The full emulator build and release are handled by ci.yml.
 on:
   push:
-    branches: [nx2]
+    branches: [main]
   pull_request:
-    branches: [nx2]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
