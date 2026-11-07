@@ -2,14 +2,14 @@
 
 Frameropia is an experimental emulator fork focused on Pokémon Pokopia compatibility. You can help without writing code:
 
-- Join our [Discord](https://discord.gg/jCCZ58VExk) community
-- Submit [bug reports or feature requests](https://github.com/Framerr/Frameropia/issues)
+- Help investigate and reproduce Pokémon Pokopia compatibility issues
+- Submit [bug reports](https://github.com/Framerr/Frameropia/issues)
 - Improve documentation or share reproducible testing results
 - Contribute to our [translation efforts](./dist/languages/README.md)
 
 ## Code Contributions
 
-Eglantine is free, open-source, copyleft software, licensed under the terms of the [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html). You would do well to familiarize yourself with the GPL, [its FAQ](https://www.gnu.org/licenses/gpl-faq.html), and [free software as a concept](https://www.gnu.org/philosophy/free-sw.html) before contributing. If these terms are not acceptable to you, then you shouldn't contribute.
+Frameropia is free, open-source, copyleft software, licensed under the terms of the [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html). You would do well to familiarize yourself with the GPL, [its FAQ](https://www.gnu.org/licenses/gpl-faq.html), and [free software as a concept](https://www.gnu.org/philosophy/free-sw.html) before contributing. If these terms are not acceptable to you, then you shouldn't contribute.
 
 ### Policies
 
@@ -29,7 +29,7 @@ Eglantine is free, open-source, copyleft software, licensed under the terms of t
 
 ### Where do I start?
 
-Anywhere you like! If you are facing an issue and want to fix it, go ahead. For new features, you are heavily encouraged to open a [feature request](https://github.com/Framerr/Frameropia/issues) first, discussing the motivations, potential implementation, and user flow of your desired feature.
+Anywhere you like! If you are facing an issue and want to fix it, go ahead. For new features, you are encouraged to open a [discussion issue](https://github.com/Framerr/Frameropia/issues) first, discussing the motivations, potential implementation, and user flow of your desired feature.
 
 Search the [open issues](https://github.com/Framerr/Frameropia/issues) and [pull requests](https://github.com/Framerr/Frameropia/pulls) before starting to avoid duplicating work. For larger features/refactors, you should first express your interest in the issue to ensure another developer isn't already working on it.
 
@@ -50,4 +50,4 @@ Before opening a pull request, make sure your branch is up-to-date with Framerop
 
 Alongside the other contribution methods listed up top, you can also choose to contribute through documentation, organization, or community guides. These can be done either through the code contribution methods described above, or created externally and shared via our Discord community.
 
-If you have an external tool/page that you believe would be handy to integrate/link into Eglantine, please discuss it with the developers on [Discord](https://discord.gg/jCCZ58VExk). **Do not submit vibe-coded or AI generated tools or applications**.
+For external tools or integration proposals, open an issue on this fork and describe the motivation and verification method. Review the repository's AI disclosure policy before submitting code or documentation.

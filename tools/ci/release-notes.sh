@@ -38,7 +38,7 @@ commits() { git log --no-merges --pretty='- %s (`%h`)' "$@" 2>/dev/null | head -
       # The checked-out default branch provides the trusted release notes.
       # The matching CHANGELOG section above is still required and validated.
       fork_notes="docs/releases/${tag}.md"
-      if [[ ( "$repo" == "Framerr/Frameropia" || "$repo" == "Framerr/Frameropia" ) && -s "$fork_notes" ]]; then
+      if [[ ( "$repo" == "Framerr/Frameropia" || "$repo" == "Framerr/Eglantine-Framer" ) && -s "$fork_notes" ]]; then
         cat "$fork_notes"
         printf '\n'
       else

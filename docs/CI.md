@@ -29,7 +29,7 @@ X.Y.Z
 X.Y.Z-rcN
 ```
 
-Examples: `0.1.0-rc1`, `0.1.0`, `0.1.1-rc1`. Numeric components cannot have leading zeroes. The bundle starts with `0.1.0-rc1` as a **suggested starting point**, not as an existing Eglantine version convention. The current public releases use `build-<run number>`; confirm the first semantic version with maintainers before merging this value. The included `[0.1.0]` changelog section is intentionally empty and must receive the real initial release notes before the first versioned release can publish.
+Examples: `0.1.0-rc1`, `0.1.0`, `0.1.1-rc1`. Numeric components cannot have leading zeroes. Frameropia starts its own version sequence at `0.0.1`. Historical entries inherited from Eglantine remain in the changelog for attribution. New version numbers must be monotonic; CI will reject an existing release tag.
 
 Add changes to the top `## [Unreleased]` section in `CHANGELOG.md`. When a new candidate is prepared, the bump script moves those entries beneath `## [X.Y.Z]` and leaves an empty `## [Unreleased]` section ready for the next cycle. The RC and stable release notes come from that version section; an absent or empty section fails before the build is published.
 
@@ -105,7 +105,7 @@ Only stable and RC publications send the optional Discord notification. Daily an
 
 The local `setup-build` action writes the four root-level files consumed by the repository's `GetSCMRev` CMake module: `GIT-COMMIT`, `GIT-REFSPEC`, `GIT-TAG`, and (for stable/RC only) `GIT-RELEASE`. This avoids depending on tags being present in shallow checkouts or on a named branch being available in detached PR checkouts.
 
-Stable and RC builds get `GIT-RELEASE`, so CMake marks them as release builds. Daily and branch builds omit that file and are configured with `NIGHTLY_BUILD=ON`; stable and RC builds are configured with it off. The project currently disables the update checker in the CI build flags. The SCM/update-server template still contains upstream Eden URLs; do not enable the updater until those URLs are intentionally migrated to Eglantine's own service.
+Stable and RC builds get `GIT-RELEASE`, so CMake marks them as release builds. Daily and branch builds omit that file and are configured with `NIGHTLY_BUILD=ON`; stable and RC builds are configured with it off. The project currently disables the update checker in the CI build flags. The updater is not configured for Frameropia's GitHub releases. Keep it disabled until a compatible updater has been implemented and tested; do not fetch updates from an upstream emulator automatically.
 
 ## Troubleshooting
 
