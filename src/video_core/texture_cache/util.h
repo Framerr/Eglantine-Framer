@@ -103,6 +103,11 @@ void ExecuteUnswizzlePlan(Tegra::MemoryManager& gpu_memory, const UnswizzlePlan&
     Tegra::MemoryManager& gpu_memory, GPUVAddr gpu_addr, const ImageInfo& info,
     std::span<const u8> input, std::span<u8> output);
 
+/// Read a linear guest image directly into the staging destination.
+[[nodiscard]] boost::container::small_vector<BufferImageCopy, 16> UnswizzleLinearImage(
+    Tegra::MemoryManager& gpu_memory, GPUVAddr gpu_addr, const ImageInfo& info,
+    size_t guest_size_bytes, std::span<u8> output);
+
 /// For a single-layer 2D block-linear image of 1x1-texel blocks: the host sparse blocks
 /// (tile_width x tile_height texels) that the guest byte ranges (offset, size) touch, merged into
 /// runs along x. Levels from tail_level on (the host's mip tail) come whole.
