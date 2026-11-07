@@ -37,6 +37,9 @@ correctness are **not yet verified**.
 - [Pokopia test checklist and bug reporting](docs/POKOPIA_TESTING.md)
 - [CI builds and release guide](docs/CI.md)
 - [Download test releases](https://github.com/Framerr/Eglantine-Framer/releases)
+- [v0.0.1 patch notes](docs/releases/v0.0.1.md)
+
+Please use **English** for issue reports, pull requests, documentation, and release notes.
 
 The emulator is based on [Eglantine](https://github.com/Djihads80/Eglantine).
 This fork's tests and changes should not be interpreted as upstream fixes.
