@@ -3,7 +3,7 @@
 This fork is experimental. **An available binary does not mean Pokémon Pokopia is fully playable.**
 Report only what a specific build actually does, and keep each issue focused on one reproducible symptom.
 
-## First test: v0.0.1
+## Test builds: v0.0.1 and v0.0.2
 
 - Base: Eglantine `nx2`, with the fork's Vulkan null texel-buffer changes ([PR #1](https://github.com/Framerr/Frameropia/pull/1)).
 - Purpose: establish a reproducible baseline, especially for graphics, crashes, and game startup.
@@ -14,9 +14,27 @@ Report only what a specific build actually does, and keep each issue focused on 
 ## Get a test build
 
 1. Open [Actions → ci](https://github.com/Framerr/Frameropia/actions/workflows/ci.yml).
-2. Choose **Run workflow**, branch **nx2**, `kind: stable`, `platforms: windows`, `pgo: none`, and `publish: true`.
-3. Once a build succeeds and publishes, download the Windows ZIP from [Releases](https://github.com/Framerr/Frameropia/releases). Extract the whole archive and run `eglantine.exe` — do not run it from inside the ZIP.
+2. Choose **Run workflow**, branch **nx2**, `kind: branch`, `platforms: windows`, `pgo: none`, and `publish: true` for an experimental build. Use `kind: stable` only when intentionally publishing the version in `VERSION`.
+3. Once a build succeeds and publishes, download the Windows ZIP from [Releases](https://github.com/Framerr/Frameropia/releases). Extract the whole archive and run `frameropia.exe` for v0.0.2 or newer (`eglantine.exe` for the original v0.0.1 archive) — do not run it from inside the ZIP.
 4. If the workflow or Windows build fails, report the workflow run URL instead of assuming the emulator binary exists.
+
+## User-observed compatibility baseline (v0.0.1)
+
+The following is a tester report, **not** an independently reproduced developer result and **not** a claim that v0.0.2 fixes these defects:
+
+- Pokopia boots and can be played on the v0.0.1 Windows release.
+- Approximately 30 FPS is the common observed frame rate; a peak around 42 FPS has been seen. This does not establish a hard FPS cap.
+- New shader compilation causes noticeable stuttering and may temporarily freeze the game until compilation completes.
+- In-game camera photos can be corrupted and may not match the camera preview (including severe visual artifacts).
+
+### Regression comparison for future builds
+
+1. Use the same save, game version, graphics settings, GPU driver and scene in each build. Record FPS and frametime spikes over a 2-minute run.
+2. Visit the same area twice; measure shader-related stalls separately on first and second traversal. Do not clear the shader cache between repeat traversals.
+3. Take three consecutive in-game photos; keep the preview and resulting image for each and describe whether corruption appears consistently or intermittently.
+4. Repeat the camera test with screen sharing and third-party overlays disabled, then enabled, to isolate any interaction.
+5. Check that geometry, shadows, terrain, UI and save loading have not regressed. Async shader compilation can trade long stalls for temporarily missing rendering; evaluate both.
+6. Confirm the extracted v0.0.2 Windows ZIP contains `frameropia.exe`, `frameropia-cli.exe`, Qt plugins and required DLLs, and that the visible application name is Frameropia.
 
 ## Smoke-test checklist
 
