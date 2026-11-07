@@ -38,7 +38,7 @@ commits() { git log --no-merges --pretty='- %s (`%h`)' "$@" 2>/dev/null | head -
       # The checked-out default branch provides the trusted release notes.
       # The matching CHANGELOG section above is still required and validated.
       fork_notes="docs/releases/${tag}.md"
-      if [[ ( "$repo" == "Framerr/Frameropia" || "$repo" == "Framerr/Eglantine-Framer" ) && -s "$fork_notes" ]]; then
+      if [[ ( "$repo" == "Framerr/Frameropia" || "$repo" == "Framerr/Frameropia" ) && -s "$fork_notes" ]]; then
         cat "$fork_notes"
         printf '\n'
       else
@@ -99,11 +99,11 @@ EOF2
   m_dmg=$(link dmg frameropia-macos-arm64.dmg)
   if [[ -n "$m_zip$m_dmg" ]]; then
     printf '## macOS\n\n| Build Type | Standard | PGO (Recommended) | Notes |\n| --- | --- | --- | --- |\n'
-    row 'arm64 (Apple Silicon)' "$(join "$m_zip" "$m_dmg")" '' "macOS ${macos_ver} or newer. Not notarized: right-click and choose Open the first time, or run `xattr -dr com.apple.quarantine frameropia.app`. `eden-cli` is inside the app, in `Contents/MacOS`."
+    row 'arm64 (Apple Silicon)' "$(join "$m_zip" "$m_dmg")" '' "macOS ${macos_ver} or newer. Not notarized: right-click and choose Open the first time, or run `xattr -dr com.apple.quarantine frameropia.app`. `frameropia-cli` is inside the app, in `Contents/MacOS`."
     printf '\n'
   fi
 
   if [[ -n "$x_pgo$a_pgo$w_pgo" ]]; then
-    echo "The PGO builds are the same programs compiled with profile-guided optimization (clang plus Eglantine's profile); prefer them when your CPU supports it."
+    echo "The PGO builds are the same programs compiled with profile-guided optimization (clang plus the inherited Eglantine profile); prefer them when your CPU supports it."
   fi
 } > "$out"

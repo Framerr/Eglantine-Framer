@@ -1,4 +1,4 @@
-# Eglantine CI and release guide
+# Frameropia CI and release guide
 
 This document describes the split GitHub Actions pipeline used by the fork. The workflow files live on `nx2` (the default branch). GitHub Actions must be enabled for the fork; commits made by automated integrations might not trigger a new run, so manual dispatch is available.
 
@@ -86,7 +86,7 @@ Both the scheme-preparation job and the publishing job check out CI helper scrip
 | Windows x86_64      | MSVC `.zip`                  | MinGW/clang `.zip`     |
 | macOS Apple Silicon | App bundle `.zip` and `.dmg` | Not built              |
 
-The existing build steps use the repository's current CMake targets (`yuzu` and `yuzu-cmd`) and package the produced `eglantine` and `eden-cli` binaries. Linux AppImages require glibc 2.39 or newer. Linux tarballs use system Qt and other shared libraries. Windows archives contain the deployed runtime dependencies. macOS artifacts are ad-hoc signed, not notarized; Gatekeeper may require the user to approve the app on first launch.
+The existing build steps use the internal CMake targets (`yuzu` and `yuzu-cmd`) but package the public `frameropia` and `frameropia-cli` binaries. Linux AppImages require glibc 2.39 or newer. Linux tarballs use system Qt and other shared libraries. Windows archives contain the deployed runtime dependencies. macOS artifacts are ad-hoc signed, not notarized; Gatekeeper may require the user to approve the app on first launch.
 
 Build artifacts are retained for seven days. Published GitHub Release assets remain available until a release is deleted. Daily releases are pruned to approximately the seven most recent; branch releases are rolling and are cleaned up when no longer needed.
 
@@ -94,10 +94,10 @@ Build artifacts are retained for seven days. Published GitHub Release assets rem
 
 | Kind              | Tag                    | Release title                            | GitHub Release flag                |
 | ----------------- | ---------------------- | ---------------------------------------- | ---------------------------------- |
-| Stable            | `vX.Y.Z`               | `Eglantine vX.Y.Z`                       | Not a pre-release; marked latest   |
-| Release candidate | `vX.Y.Z-rcN`           | `Eglantine vX.Y.Z-rcN`                   | Pre-release                        |
-| Daily             | `daily-YYYYMMDD`       | `Eglantine Build DD/MM/YYYY`             | Pre-release; replaces same-day tag |
-| Branch / PR       | `branch-<slug>-<hash>` | `Eglantine Branch: <PR title or branch>` | Pre-release; rolling               |
+| Stable            | `vX.Y.Z`               | `Frameropia vX.Y.Z`                       | Not a pre-release; marked latest   |
+| Release candidate | `vX.Y.Z-rcN`           | `Frameropia vX.Y.Z-rcN`                   | Pre-release                        |
+| Daily             | `daily-YYYYMMDD`       | `Frameropia Build DD/MM/YYYY`             | Pre-release; replaces same-day tag |
+| Branch / PR       | `branch-<slug>-<hash>` | `Frameropia Branch: <PR title or branch>` | Pre-release; rolling               |
 
 Only stable and RC publications send the optional Discord notification. Daily and branch releases do not.
 

@@ -204,7 +204,7 @@ jobs:
           test -x build/release/bin/frameropia-cli
           strip build/release/bin/frameropia build/release/bin/frameropia-cli
           tar -czf "frameropia-${SHA}-${PLATFORM}.tar.gz" \
-            -C build/release/bin eglantine frameropia-cli
+            -C build/release/bin frameropia frameropia-cli
           ls -la "frameropia-${SHA}-${PLATFORM}.tar.gz"
 
       # A self-contained AppImage: linuxdeploy bundles every library the two programs need except
@@ -226,7 +226,7 @@ jobs:
           curl -fsSL -o "$tools/linuxdeploy-plugin-qt-$arch.AppImage" \
             "https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-$arch.AppImage"
           chmod +x "$tools"/*.AppImage
-          # The desktop file names its icon dev.eglantine.eglantine.
+          # The desktop file uses the Frameropia application ID.
           icon="$RUNNER_TEMP/io.github.framerr.frameropia.png"
           cp dist/Eglantine.png "$icon"
           export APPIMAGE_EXTRACT_AND_RUN=1
