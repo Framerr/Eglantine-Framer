@@ -8,6 +8,8 @@ on:
       - .github/workflows/fork-windows-check.yml
       - .github/workflows/build-windows.yml
       - src/CMakeLists.txt
+      - src/video_core/**
+      - src/shader_recompiler/**
       - src/yuzu/**
       - src/yuzu_cmd/**
       - src/qt_common/**
