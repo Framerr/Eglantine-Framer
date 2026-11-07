@@ -1,0 +1,98 @@
+name: repair-v0.0.1-release
+
+# One-time repair of a published release that accidentally uploaded Qt plugin folders.
+# Reuses the exact successful v0.0.1 Windows artifact, without changing the git tag.
+on:
+  push:
+    branches: [nx2]
+    paths:
+      - .github/workflows/repair-v0.0.1.yml
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  repair:
+    if: github.repository == 'Framerr/Frameropia'
+    runs-on: ubuntu-24.04
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TAG: v0.0.1
+      ORIGINAL_SHA: 4db9b59173315eace20b03d6178e77a2d4f36445
+      ARCHIVE: frameropia-windows-x86_64.zip
+    steps:
+      - name: Check out trusted source
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Download the successful original Windows build
+        uses: actions/download-artifact@v8
+        with:
+          name: eglantine-windows-x86_64-4db9b59173315eace20b03d6178e77a2d4f36445
+          run-id: 42410526945
+          github-token: ${{ github.token }}
+          path: original-build
+
+      - name: Verify release tag and prepare a complete ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          actual=$(gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$TAG" --jq '.object.sha')
+          [[ "$actual" == "$ORIGINAL_SHA" ]] || {
+            echo "Release tag does not point to the original build; refusing to modify it" >&2
+            exit 1
+          }
+          test -s original-build/eglantine.exe
+          test -s original-build/eden-cli.exe
+          (cd original-build && zip -qr "../$ARCHIVE" .)
+          test -s "$ARCHIVE"
+          unzip -Z1 "$ARCHIVE" | grep -qx 'eglantine.exe'
+          unzip -Z1 "$ARCHIVE" | grep -qx 'eden-cli.exe'
+          unzip -Z1 "$ARCHIVE" | grep -qE '^(plugins/|platforms/)'
+          echo "Verified the original binaries and Qt runtime files in $ARCHIVE"
+
+      - name: Repair release notes and published assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null
+          gh release upload "$TAG" "$ARCHIVE" --repo "$GITHUB_REPOSITORY" --clobber
+
+          cat docs/releases/v0.0.1.md > repaired-notes.md
+          cat >>repaired-notes.md <<'NOTES'
+
+          ## Windows download
+
+          [Download the complete Windows x86_64 archive](https://github.com/Framerr/Frameropia/releases/download/v0.0.1/frameropia-windows-x86_64.zip)
+
+          **Historical executable names:** this v0.0.1 build was compiled before the Frameropia application rebrand. Extract the entire ZIP and run `eglantine.exe`; the included CLI is `eden-cli.exe`. Future builds use `frameropia.exe` and `frameropia-cli.exe`. Do not extract Qt plugin folders separately.
+          NOTES
+
+          gh release edit "$TAG" --repo "$GITHUB_REPOSITORY" \
+            --title 'Frameropia v0.0.1 (legacy test build)' \
+            --notes-file repaired-notes.md --prerelease
+
+          # Only remove the eight known accidental Qt plugin archives.
+          for stale in generic.zip iconengines.zip imageformats.zip \
+            networkinformation.zip platforms.zip plugins.zip styles.zip tls.zip; do
+            if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json assets \
+              --jq '.assets[].name' | grep -Fxq "$stale"; then
+              gh release delete-asset "$TAG" "$stale" \
+                --repo "$GITHUB_REPOSITORY" --yes
+            fi
+          done
+
+      - name: Verify the corrected release
+        shell: bash
+        run: |
+          set -euo pipefail
+          assets=$(gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json assets \
+                   --jq '.assets[].name')
+          test "$assets" = "$ARCHIVE" || {
+            echo "Unexpected assets remaining:" >&2
+            echo "$assets" >&2
+            exit 1
+          }
+          gh release view "$TAG" --repo "$GITHUB_REPOSITORY"
