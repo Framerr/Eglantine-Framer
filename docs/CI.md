@@ -1,4 +1,4 @@
-# Eglantine CI and release guide
+# Frameropia CI and release guide
 
 This document describes the split GitHub Actions pipeline used by the fork. The workflow files live on `nx2` (the default branch). GitHub Actions must be enabled for the fork; commits made by automated integrations might not trigger a new run, so manual dispatch is available.
 
@@ -29,7 +29,7 @@ X.Y.Z
 X.Y.Z-rcN
 ```
 
-Examples: `0.1.0-rc1`, `0.1.0`, `0.1.1-rc1`. Numeric components cannot have leading zeroes. The bundle starts with `0.1.0-rc1` as a **suggested starting point**, not as an existing Eglantine version convention. The current public releases use `build-<run number>`; confirm the first semantic version with maintainers before merging this value. The included `[0.1.0]` changelog section is intentionally empty and must receive the real initial release notes before the first versioned release can publish.
+Examples: `0.1.0-rc1`, `0.1.0`, `0.1.1-rc1`. Numeric components cannot have leading zeroes. Frameropia starts its own version sequence at `0.0.1`. Historical entries inherited from Eglantine remain in the changelog for attribution. New version numbers must be monotonic; CI will reject an existing release tag.
 
 Add changes to the top `## [Unreleased]` section in `CHANGELOG.md`. When a new candidate is prepared, the bump script moves those entries beneath `## [X.Y.Z]` and leaves an empty `## [Unreleased]` section ready for the next cycle. The RC and stable release notes come from that version section; an absent or empty section fails before the build is published.
 
@@ -49,6 +49,10 @@ Add changes to the top `## [Unreleased]` section in `CHANGELOG.md`. When a new c
 The bump workflow does not merge the PR for you. The merge is the approval gate. Merge or close the current release PR before starting another bump; otherwise the next run starts again from the still-unmerged `nx2` version. The helper script refuses to start a new major/minor/patch candidate while the current `VERSION` is still an RC; finish or promote that RC first. If branch protection requires CI on release PRs, add `ci:build` after reviewing the generated PR so it gets a CI run.
 
 The CI duplicate check refuses to publish a tag that already exists. It does **not** compare the new semantic version numerically with the latest release, so maintainers must keep version numbers moving forward. If a failed run did not create the release/tag, re-run the workflow after fixing the failure.
+
+## Windows build verification for pull requests
+
+The `fork-windows-check.yml` workflow validates Windows/MSVC compilations for source and build-system changes in pull requests to `nx2`. It uploads short-lived workflow artifacts and does **not** publish a release.
 
 ## Running a build manually
 
@@ -86,7 +90,7 @@ Both the scheme-preparation job and the publishing job check out CI helper scrip
 | Windows x86_64      | MSVC `.zip`                  | MinGW/clang `.zip`     |
 | macOS Apple Silicon | App bundle `.zip` and `.dmg` | Not built              |
 
-The existing build steps use the repository's current CMake targets (`yuzu` and `yuzu-cmd`) and package the produced `eglantine` and `eden-cli` binaries. Linux AppImages require glibc 2.39 or newer. Linux tarballs use system Qt and other shared libraries. Windows archives contain the deployed runtime dependencies. macOS artifacts are ad-hoc signed, not notarized; Gatekeeper may require the user to approve the app on first launch.
+The existing build steps use the internal CMake targets (`yuzu` and `yuzu-cmd`) but package the public `frameropia` and `frameropia-cli` binaries. Linux AppImages require glibc 2.39 or newer. Linux tarballs use system Qt and other shared libraries. Windows archives contain the deployed runtime dependencies. macOS artifacts are ad-hoc signed, not notarized; Gatekeeper may require the user to approve the app on first launch.
 
 Build artifacts are retained for seven days. Published GitHub Release assets remain available until a release is deleted. Daily releases are pruned to approximately the seven most recent; branch releases are rolling and are cleaned up when no longer needed.
 
@@ -94,10 +98,10 @@ Build artifacts are retained for seven days. Published GitHub Release assets rem
 
 | Kind              | Tag                    | Release title                            | GitHub Release flag                |
 | ----------------- | ---------------------- | ---------------------------------------- | ---------------------------------- |
-| Stable            | `vX.Y.Z`               | `Eglantine vX.Y.Z`                       | Not a pre-release; marked latest   |
-| Release candidate | `vX.Y.Z-rcN`           | `Eglantine vX.Y.Z-rcN`                   | Pre-release                        |
-| Daily             | `daily-YYYYMMDD`       | `Eglantine Build DD/MM/YYYY`             | Pre-release; replaces same-day tag |
-| Branch / PR       | `branch-<slug>-<hash>` | `Eglantine Branch: <PR title or branch>` | Pre-release; rolling               |
+| Stable            | `vX.Y.Z`               | `Frameropia vX.Y.Z`                       | Not a pre-release; marked latest   |
+| Release candidate | `vX.Y.Z-rcN`           | `Frameropia vX.Y.Z-rcN`                   | Pre-release                        |
+| Daily             | `daily-YYYYMMDD`       | `Frameropia Build DD/MM/YYYY`             | Pre-release; replaces same-day tag |
+| Branch / PR       | `branch-<slug>-<hash>` | `Frameropia Branch: <PR title or branch>` | Pre-release; rolling               |
 
 Only stable and RC publications send the optional Discord notification. Daily and branch releases do not.
 
@@ -105,7 +109,7 @@ Only stable and RC publications send the optional Discord notification. Daily an
 
 The local `setup-build` action writes the four root-level files consumed by the repository's `GetSCMRev` CMake module: `GIT-COMMIT`, `GIT-REFSPEC`, `GIT-TAG`, and (for stable/RC only) `GIT-RELEASE`. This avoids depending on tags being present in shallow checkouts or on a named branch being available in detached PR checkouts.
 
-Stable and RC builds get `GIT-RELEASE`, so CMake marks them as release builds. Daily and branch builds omit that file and are configured with `NIGHTLY_BUILD=ON`; stable and RC builds are configured with it off. The project currently disables the update checker in the CI build flags. The SCM/update-server template still contains upstream Eden URLs; do not enable the updater until those URLs are intentionally migrated to Eglantine's own service.
+Stable and RC builds get `GIT-RELEASE`, so CMake marks them as release builds. Daily and branch builds omit that file and are configured with `NIGHTLY_BUILD=ON`; stable and RC builds are configured with it off. The project currently disables the update checker in the CI build flags. The updater is not configured for Frameropia's GitHub releases. Keep it disabled until a compatible updater has been implemented and tested; do not fetch updates from an upstream emulator automatically.
 
 ## Troubleshooting
 

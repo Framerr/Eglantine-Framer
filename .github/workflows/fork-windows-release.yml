@@ -84,7 +84,7 @@ jobs:
     with:
       kind: stable
       tag: ${{ needs.prepare.outputs.tag }}
-      title: Eglantine-Framer ${{ needs.prepare.outputs.tag }} (test build)
+      title: Frameropia ${{ needs.prepare.outputs.tag }} (test build)
       prerelease: true
       sha: ${{ needs.prepare.outputs.sha }}
       branch: nx2

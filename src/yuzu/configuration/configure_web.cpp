@@ -45,10 +45,6 @@ ConfigureWeb::ConfigureWeb(QWidget* parent)
 
     connect(ui->button_generate, &QPushButton::clicked, this, &ConfigureWeb::GenerateToken);
 
-#ifndef USE_DISCORD_PRESENCE
-    ui->discord_group->setVisible(false);
-#endif
-
     SetConfiguration();
     RetranslateUI();
 }
@@ -76,7 +72,6 @@ void ConfigureWeb::SetConfiguration() {
 
     VerifyLogin();
 
-    ui->toggle_discordrpc->setChecked(UISettings::values.enable_discord_presence.GetValue());
 }
 
 void ConfigureWeb::GenerateToken() {
@@ -93,7 +88,6 @@ void ConfigureWeb::GenerateToken() {
 }
 
 void ConfigureWeb::ApplyConfiguration() {
-    UISettings::values.enable_discord_presence = ui->toggle_discordrpc->isChecked();
     Settings::values.eden_username = ui->edit_username->text().toStdString();
     Settings::values.eden_token = ui->edit_token->text().toStdString();
 }

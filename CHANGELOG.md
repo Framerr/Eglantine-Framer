@@ -6,6 +6,14 @@ New entries go under `## [Unreleased]`; `tools/ci/bump-version.sh` turns them in
 
 ## [Unreleased]
 
+### Frameropia rebrand (after v0.0.1)
+
+- Rebrand the GUI, dialogs, startup messages, and packaged executable names to **Frameropia**.
+- Remove Discord links and presence options from the application's interface.
+- Point the fork's documentation, help screens, issue reporting, and release links to the Frameropia GitHub repository.
+- Update CI release assets and packaging metadata for Windows, Linux, and macOS.
+- Preserve legacy Eden/Eglantine data paths to avoid disrupting existing settings and saves.
+
 - Added OOT Compatibility
 - Improved MKW Performances
 - Added StarFox Compatibility

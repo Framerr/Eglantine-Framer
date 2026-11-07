@@ -21,13 +21,13 @@ SPDX-License-Identifier: GPL-2.0-or-later
     <key>CFBundleIconName</key>
     <string>eglantine</string>
     <key>CFBundleIdentifier</key>
-    <string>com.yuzu-emu.yuzu</string> <!-- May be required by 3rd party ext -->
+    <string>io.github.framerr.frameropia</string>
     <key>CFBundleInfoDictionaryVersion</key>
     <string>6.0</string>
     <key>CFBundleLongVersionString</key>
     <string></string>
     <key>CFBundleName</key>
-    <string>eglantine</string>
+    <string>Frameropia</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleShortVersionString</key>

@@ -1,0 +1,33 @@
+name: fork-windows-check
+
+# Read-only Windows compilation check for source/build-system pull requests.
+on:
+  pull_request:
+    branches: [nx2]
+    paths:
+      - .github/workflows/fork-windows-check.yml
+      - .github/workflows/build-windows.yml
+      - src/yuzu/**
+      - src/yuzu_cmd/**
+      - src/qt_common/**
+      - src/core/launch_params.cpp
+      - CMakeModules/**
+      - CMakeLists.txt
+      - dist/**
+      - tools/ci/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows:
+    uses: ./.github/workflows/build-windows.yml
+    with:
+      sha: ${{ github.event.pull_request.head.sha || github.sha }}
+      version: ci
+      refspec: frameropia-ci
+      tag: ci
+      release: false
+      nightly: true
+      pgo: none

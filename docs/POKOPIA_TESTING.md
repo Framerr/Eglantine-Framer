@@ -5,7 +5,7 @@ Report only what a specific build actually does, and keep each issue focused on 
 
 ## First test: v0.0.1
 
-- Base: Eglantine `nx2`, with the fork's Vulkan null texel-buffer changes ([PR #1](https://github.com/Framerr/Eglantine-Framer/pull/1)).
+- Base: Eglantine `nx2`, with the fork's Vulkan null texel-buffer changes ([PR #1](https://github.com/Framerr/Frameropia/pull/1)).
 - Purpose: establish a reproducible baseline, especially for graphics, crashes, and game startup.
 - Verified in code: null texel-buffer views use `VK_WHOLE_SIZE`, and the fallback null buffer supports uniform/storage texel-buffer usage.
 - **Not yet verified:** full build, in-game behavior, the photo system, geometry stability, or whether those Vulkan changes improve Pokopia.
@@ -13,9 +13,9 @@ Report only what a specific build actually does, and keep each issue focused on 
 
 ## Get a test build
 
-1. Open [Actions → ci](https://github.com/Framerr/Eglantine-Framer/actions/workflows/ci.yml).
+1. Open [Actions → ci](https://github.com/Framerr/Frameropia/actions/workflows/ci.yml).
 2. Choose **Run workflow**, branch **nx2**, `kind: stable`, `platforms: windows`, `pgo: none`, and `publish: true`.
-3. Once a build succeeds and publishes, download the Windows ZIP from [Releases](https://github.com/Framerr/Eglantine-Framer/releases). Extract the whole archive and run `eglantine.exe` — do not run it from inside the ZIP.
+3. Once a build succeeds and publishes, download the Windows ZIP from [Releases](https://github.com/Framerr/Frameropia/releases). Extract the whole archive and run `eglantine.exe` — do not run it from inside the ZIP.
 4. If the workflow or Windows build fails, report the workflow run URL instead of assuming the emulator binary exists.
 
 ## Smoke-test checklist
@@ -48,7 +48,7 @@ These references provide hypotheses and prior work; they do **not** establish th
 
 ## Report a problem
 
-Use the [Pokopia issue form](https://github.com/Framerr/Eglantine-Framer/issues/new/choose). Include:
+Use the [Pokopia issue form](https://github.com/Framerr/Frameropia/issues/new/choose). Include:
 
 - Exact release, commit, emulator graphics backend/settings, GPU and driver, OS, and game update.
 - Reproduction steps, expected result, and actual result. Say whether it also happens on an earlier build.
