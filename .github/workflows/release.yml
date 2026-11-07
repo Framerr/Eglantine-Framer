@@ -92,6 +92,15 @@ jobs:
           # artifacts/. Never mistake Qt plugin directories for build artifacts.
           if [[ -s artifacts/frameropia.exe && -s artifacts/frameropia-cli.exe ]]; then
             artifact_dirs=(artifacts/)
+          else
+            # Likewise a single Linux/macOS artifact can be flattened by the action.
+            root_packages=(artifacts/frameropia-"$SHA"-*.AppImage
+                           artifacts/frameropia-"$SHA"-*.tar.gz
+                           artifacts/frameropia-"$SHA"-*.zip
+                           artifacts/frameropia-"$SHA"-*.dmg)
+            if (("${#root_packages[@]}" > 0)); then
+              artifact_dirs=(artifacts/)
+            fi
           fi
           (("${#artifact_dirs[@]}" > 0)) || {
             echo "No build artifacts were downloaded" >&2
@@ -102,7 +111,14 @@ jobs:
           for artifact in "${artifact_dirs[@]}"; do
             name=$(basename "$artifact")
             if [[ "$artifact" == artifacts/ ]]; then
-              name="frameropia-windows-x86_64-$SHA"
+              if [[ -s artifacts/frameropia.exe ]]; then
+                name="frameropia-windows-x86_64-$SHA"
+              else
+                first="${root_packages[0]##*/}"
+                platform="${first#frameropia-$SHA-}"
+                platform="${platform%%.*}"
+                name="frameropia-$platform-$SHA"
+              fi
             fi
             case "$name" in
               frameropia-windows-*-"$SHA")
@@ -117,18 +133,22 @@ jobs:
                 packaged=$((packaged+1))
                 ;;
               frameropia-linux-*-"$SHA")
+                platform="${name#frameropia-}"
+                platform="${platform%-$SHA}"
                 for ext in AppImage tar.gz; do
-                  file="$artifact/frameropia-${name#frameropia-}.$ext"
-                  [[ -f "$file" ]] || continue
-                  cp "$file" "release-assets/$(basename "$file" | sed "s/-$SHA//")"
+                  file="$artifact/frameropia-$SHA-$platform.$ext"
+                  [[ -s "$file" ]] || continue
+                  cp "$file" "release-assets/frameropia-$platform.$ext"
                   packaged=$((packaged+1))
                 done
                 ;;
               frameropia-macos-*-"$SHA")
+                platform="${name#frameropia-}"
+                platform="${platform%-$SHA}"
                 for ext in zip dmg; do
-                  file="$artifact/frameropia-${name#frameropia-}.$ext"
-                  [[ -f "$file" ]] || continue
-                  cp "$file" "release-assets/$(basename "$file" | sed "s/-$SHA//")"
+                  file="$artifact/frameropia-$SHA-$platform.$ext"
+                  [[ -s "$file" ]] || continue
+                  cp "$file" "release-assets/frameropia-$platform.$ext"
                   packaged=$((packaged+1))
                 done
                 ;;
