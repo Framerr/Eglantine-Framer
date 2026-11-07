@@ -1,6 +1,6 @@
-- [ ] I have read and followed the [Contribution Guidelines](https://github.com/Framerr/Frameropia/blob/nx2/CONTRIBUTING.md#code-contributions).
-- [ ] I have read and followed the [AI Policy](https://github.com/Framerr/Frameropia/blob/nx2/docs/policies/AI.md).
-- [ ] I have read and followed the [Coding Guidelines](https://github.com/Framerr/Frameropia/blob/nx2/docs/policies/Coding.md) to the best of my ability.
+- [ ] I have read and followed the [Contribution Guidelines](https://github.com/Framerr/Frameropia/blob/main/CONTRIBUTING.md#code-contributions).
+- [ ] I have read and followed the [AI Policy](https://github.com/Framerr/Frameropia/blob/main/docs/policies/AI.md).
+- [ ] I have read and followed the [Coding Guidelines](https://github.com/Framerr/Frameropia/blob/main/docs/policies/Coding.md) to the best of my ability.
 - [ ] **I have put [HUMANMADE] in the title if the pr was human-mande**
 
 ---

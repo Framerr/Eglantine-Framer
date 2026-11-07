@@ -19,6 +19,8 @@ Only use game files and console data that you have legally obtained. Do not uplo
 
 ## Development
 
+Frameropia development takes place on the **`main`** branch. The original `nx2` history is preserved.
+
 See the [build guide](docs/Build.md), [CI/release guide](docs/CI.md) and [contribution guide](CONTRIBUTING.md). Please use English for issues, pull requests, code comments and documentation.
 
 ## Existing settings and saves
