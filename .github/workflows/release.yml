@@ -77,9 +77,8 @@ jobs:
         with:
           pattern: frameropia-*-${{ inputs.sha }}
           path: artifacts
+          merge-multiple: false
 
-      # Asset names drop the commit sha: the tag already identifies the build, and stable names let
-      # the notes table link to them. (Not named dist/: the repository has one.)
       - name: Package release files
         shell: bash
         run: |
@@ -87,34 +86,60 @@ jobs:
           rm -rf release-assets
           mkdir -p release-assets
           shopt -s nullglob
-          strip_sha() { sed "s/-${SHA}//" <<< "$1"; }
-          artifacts=(artifacts/*/)
-          ((${#artifacts[@]} > 0)) || { echo "No build artifacts were downloaded" >&2; exit 1; }
-          for artifact in "${artifacts[@]}"; do
+          artifact_dirs=(artifacts/*/)
+
+          # download-artifact may extract the only matching artifact directly into
+          # artifacts/. Never mistake Qt plugin directories for build artifacts.
+          if [[ -s artifacts/frameropia.exe && -s artifacts/frameropia-cli.exe ]]; then
+            artifact_dirs=(artifacts/)
+          fi
+          (("${#artifact_dirs[@]}" > 0)) || {
+            echo "No build artifacts were downloaded" >&2
+            exit 1
+          }
+
+          packaged=0
+          for artifact in "${artifact_dirs[@]}"; do
             name=$(basename "$artifact")
-            appimages=("$artifact"*.AppImage)
-            mac_zips=("$artifact"*.zip)
-            if ((${#appimages[@]} > 0)); then
-              # Linux: ship the AppImage and tar.gz as they are.
-              for file in "${appimages[@]}" "$artifact"*.tar.gz; do
-                [[ -f "$file" ]] || continue
-                cp "$file" "release-assets/$(strip_sha "$(basename "$file")")"
-              done
-            elif ((${#mac_zips[@]} > 0)); then
-              # macOS: the app bundle zip and the dmg.
-              for file in "${mac_zips[@]}" "$artifact"*.dmg; do
-                [[ -f "$file" ]] || continue
-                cp "$file" "release-assets/$(strip_sha "$(basename "$file")")"
-              done
-            else
-              # Windows: upload-artifact stores the bin folder; zip it once for the release.
-              (cd "$artifact" && zip -qr "${GITHUB_WORKSPACE}/release-assets/$(strip_sha "$name").zip" .)
+            if [[ "$artifact" == artifacts/ ]]; then
+              name="frameropia-windows-x86_64-$SHA"
             fi
+            case "$name" in
+              frameropia-windows-*-"$SHA")
+                # A valid Windows archive contains BOTH complete executables,
+                # their DLLs and Qt plugin subdirectories in ONE ZIP.
+                test -s "$artifact/frameropia.exe"
+                test -s "$artifact/frameropia-cli.exe"
+                out="release-assets/${name%-$SHA}.zip"
+                (cd "$artifact" && zip -qr "$GITHUB_WORKSPACE/$out" .)
+                unzip -Z1 "$out" | grep -qx 'frameropia.exe'
+                unzip -Z1 "$out" | grep -qx 'frameropia-cli.exe'
+                packaged=$((packaged+1))
+                ;;
+              frameropia-linux-*-"$SHA")
+                for ext in AppImage tar.gz; do
+                  file="$artifact/frameropia-${name#frameropia-}.$ext"
+                  [[ -f "$file" ]] || continue
+                  cp "$file" "release-assets/$(basename "$file" | sed "s/-$SHA//")"
+                  packaged=$((packaged+1))
+                done
+                ;;
+              frameropia-macos-*-"$SHA")
+                for ext in zip dmg; do
+                  file="$artifact/frameropia-${name#frameropia-}.$ext"
+                  [[ -f "$file" ]] || continue
+                  cp "$file" "release-assets/$(basename "$file" | sed "s/-$SHA//")"
+                  packaged=$((packaged+1))
+                done
+                ;;
+              *)
+                echo "Unexpected build artifact directory: $name" >&2
+                exit 1
+                ;;
+            esac
           done
-          files=(release-assets/*)
-          ((${#files[@]} > 0)) || { echo "Build artifacts contained no release files" >&2; exit 1; }
-          printf 'Prepared %s release assets\n' "${#files[@]}"
-          ls -la release-assets
+          ((packaged > 0)) || { echo "No valid release assets" >&2; exit 1; }
+          ls -lah release-assets
 
       - name: Write release notes
         shell: bash
