@@ -17,6 +17,7 @@ require src/yuzu/configuration/configure.ui "Frameropia Configuration"
 require CMakeModules/GenerateSCMRev.cmake 'set(REPO_NAME "Frameropia")'
 require src/yuzu/CMakeLists.txt 'OUTPUT_NAME "frameropia"'
 require src/yuzu_cmd/CMakeLists.txt 'OUTPUT_NAME "frameropia-cli"'
+require src/CMakeLists.txt 'OUTPUT_NAME "frameropia-cli"'
 require .github/workflows/build-windows.yml 'frameropia.exe'
 require .github/workflows/build-linux.yml 'build/release/bin/frameropia'
 require .github/workflows/build-macos.yml 'build/release/bin/frameropia.app'
