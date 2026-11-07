@@ -1,25 +1,26 @@
 # Changelog
 
-All notable changes to Eglantine are documented here. Each release's notes are taken from its
+All notable changes to Frameropia are documented here. Each release's notes are taken from its
 `## [X.Y.Z]` section (release candidates use the section of the version they are a candidate for).
-New entries go under `## [Unreleased]`; `tools/ci/bump-version.sh` turns them into a version section.
+New entries go under `## [Unreleased]
 
-## [Unreleased]
+- Added OOT Compatibility (inherited)
+- Improved MKW Performances (inherited)
+- Added StarFox Compatibility (inherited)
+- Less shader rebuilds (inherited)
+- Changed dir from eden to eglantine (inherited)
+- Overall better performances and fixes (inherited)
 
-### Frameropia rebrand (after v0.0.1)
+## [0.0.2]
 
-- Rebrand the GUI, dialogs, startup messages, and packaged executable names to **Frameropia**.
-- Remove Discord links and presence options from the application's interface.
-- Point the fork's documentation, help screens, issue reporting, and release links to the Frameropia GitHub repository.
-- Update CI release assets and packaging metadata for Windows, Linux, and macOS.
-- Preserve legacy Eden/Eglantine data paths to avoid disrupting existing settings and saves.
-
-- Added OOT Compatibility
-- Improved MKW Performances
-- Added StarFox Compatibility
-- Less shader rebuilds
-- Changed dir from eden to eglantine
-- Overall better performances and fixes
+- Rename the Frameropia user interface, menus, dialogs, notifications, public executables, and package metadata.
+- Remove Discord navigation and presence settings from the application.
+- Update project links and README to Frameropia while retaining original upstream licensing and credits.
+- Fix the CMake CLI output-name override so the Windows build produces `frameropia-cli.exe`.
+- Fix the release workflow so Windows packages include complete binaries, DLLs and Qt plugins in a single ZIP rather than multiple plugin-folder ZIP files.
+- Repair the legacy v0.0.1 download without changing its historical source tag.
+- Preserve the pre-existing Eden/Eglantine data locations to avoid disrupting configuration and saves.
+- Pokémon Pokopia improvements are **not verified**; this release is primarily branding and packaging work.
 
 ## [0.0.1]
 

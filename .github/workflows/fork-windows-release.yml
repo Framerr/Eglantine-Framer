@@ -1,11 +1,12 @@
 name: fork-windows-release
 
-# Bootstrap a Windows test release once when added to nx2; later runs are manual.
+# Publish Windows test releases when VERSION changes on nx2; manual runs remain available.
 # Full cross-platform builds can still use the upstream ci.yml workflow.
 on:
   push:
     branches: [nx2]
     paths:
+      - VERSION
       - .github/workflows/fork-windows-release.yml
   workflow_dispatch:
 
