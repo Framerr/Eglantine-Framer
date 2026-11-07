@@ -20,15 +20,6 @@ It's written in C++ with portability in mind, with builds for Windows, Linux and
 </h4>
 
 <p align="center">
-    </a>
-    <a href="https://discord.gg/XkS5NVPTUY">
-        <img src="https://img.shields.io/discord/1367654015269339267?color=5865F2&label=Eglantine&logo=discord&logoColor=white"
-            alt="Discord">
-    </a>
-  
-</p>
-
-<p align="center">
   <a href="#compatibility">Compatibility</a> |
   <a href="#development">Development</a> |
   <a href="#building">Building</a> |
@@ -45,8 +36,6 @@ A list of supported games will be available in future. Please be patient.
 
 ## Development
 
-For development discussions, please join us on [Discord](https://discord.gg/jCCZ58VExk)
-
 If you would like to contribute, we are open to new developers and pull requests. Please ensure that your work is of a high standard and properly documented. You can also contact any of the developers on Discord or Stoat to learn more about the current state of the emulator.
 
 ## Documentation
@@ -61,21 +50,19 @@ For information on provided development tooling, see the [Tools directory](./too
 
 ## Download
 
-You can download the latest releases from [here](https://github.com/Djihads80/Eglantine/releases).
+You can download the latest releases from [here](https://github.com/Framerr/Eglantine-Framer/releases).
 
 ## Support
 
 We currently do not take in any donations for the time being
 
-If you would prefer to support us in a different way, please join our [Discord](https://discord.gg/jCCZ58VExk)
-
 ## Star History
 
-<a href="https://www.star-history.com/?repos=djihads80%2Feglantine&type=date&legend=bottom-right">
+<a href="https://www.star-history.com/?repos=framerr%2Feglantine-framer&type=date&legend=bottom-right">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=djihads80/eglantine&type=date&theme=dark&legend=bottom-right" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=djihads80/eglantine&type=date&legend=bottom-right" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=djihads80/eglantine&type=date&legend=bottom-right" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=framerr/eglantine-framer&type=date&theme=dark&legend=bottom-right" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=framerr/eglantine-framer&type=date&legend=bottom-right" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=framerr/eglantine-framer&type=date&legend=bottom-right" />
  </picture>
 </a>
 
