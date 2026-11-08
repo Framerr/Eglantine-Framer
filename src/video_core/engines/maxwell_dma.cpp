@@ -203,7 +203,37 @@ void MaxwellDMA::CopyBlockLinearToPitch() {
     copy_info.length_x = regs.line_length_in;
     copy_info.length_y = regs.line_count;
     auto& accelerate = rasterizer->AccessAccelerateDMA();
-    if (accelerate.ImageToBuffer(copy_info, src_operand, dst_operand)) {
+
+    // Diagnostic for residual first-photo corruption after the DMA readback flush.
+    // A Pokopia photo is 1920x1080 RGBA8 (7680 bytes/row). Try the existing
+    // non-accelerated fallback only for the first two matching copies per emulator
+    // process. This is an experimental A/B test, NOT a proven permanent fix.
+    // Set FRAMEROPIA_FIRST_PHOTO_DMA_CPU=0 to retain the normal accelerated path.
+    const bool is_photo_shape = Tegra::g_nx2_ampere.load(std::memory_order_relaxed) &&
+                                regs.line_count == 1080 &&
+                                regs.line_length_in == 7680 &&
+                                dst_operand.pitch == 7680 &&
+                                regs.src_params.block_size.width == 0 &&
+                                regs.src_params.block_size.depth == 0 &&
+                                regs.src_params.depth == 1;
+    static u32 photo_shape_copies = 0;
+    static const bool test_cpu_first = [] {
+        const char* value = std::getenv("FRAMEROPIA_FIRST_PHOTO_DMA_CPU");
+        return value == nullptr || value[0] != '0';
+    }();
+    const u32 photo_copy_index = is_photo_shape ? ++photo_shape_copies : 0;
+    const bool bypass_acceleration = test_cpu_first && is_photo_shape &&
+                                     photo_copy_index <= 2;
+    if (is_photo_shape && photo_copy_index <= 12) {
+        LOG_INFO(HW_GPU,
+                 "Pokopia photo-shaped DMA copy {}: source={:#x} destination={:#x} "
+                 "pitch={} rows={} fallback={}",
+                 photo_copy_index, static_cast<GPUVAddr>(src_operand.address),
+                 static_cast<GPUVAddr>(dst_operand.address), dst_operand.pitch,
+                 regs.line_count, bypass_acceleration);
+    }
+    if (!bypass_acceleration &&
+        accelerate.ImageToBuffer(copy_info, src_operand, dst_operand)) {
         // Switch 2 photo captures may read the DMA destination on the CPU before an
         // accelerated GPU image-to-buffer copy reaches guest memory. Flush the copied
         // region before DMA completion to avoid encoding stale rows.
