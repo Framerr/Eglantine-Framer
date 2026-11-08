@@ -15,6 +15,7 @@
 #include "video_core/engines/maxwell_dma.h"
 #include "video_core/guest_memory.h"
 #include "video_core/memory_manager.h"
+#include "video_core/nx2.h"
 #include "video_core/renderer_base.h"
 #include "video_core/textures/decoders.h"
 
@@ -203,6 +204,21 @@ void MaxwellDMA::CopyBlockLinearToPitch() {
     copy_info.length_y = regs.line_count;
     auto& accelerate = rasterizer->AccessAccelerateDMA();
     if (accelerate.ImageToBuffer(copy_info, src_operand, dst_operand)) {
+        // Switch 2 photo captures may read the DMA destination on the CPU before an
+        // accelerated GPU image-to-buffer copy reaches guest memory. Flush the copied
+        // region before DMA completion to avoid encoding stale rows.
+        //
+        // Experimental port of notsapinho/Eglantine@7dde4f15. Set
+        // EDEN_NX2_DMA_READBACK_FLUSH=0 to compare against the existing behavior.
+        static const bool flush_readbacks = [] {
+            const char* value = std::getenv("EDEN_NX2_DMA_READBACK_FLUSH");
+            return value == nullptr || value[0] != '0';
+        }();
+        if (flush_readbacks && Tegra::g_nx2_ampere.load(std::memory_order_relaxed)) {
+            memory_manager.FlushRegion(dst_operand.address,
+                                       static_cast<size_t>(dst_operand.pitch) * regs.line_count,
+                                       VideoCommon::CacheType::BufferCache);
+        }
         return;
     }
 
