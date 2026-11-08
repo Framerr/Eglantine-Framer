@@ -2,14 +2,18 @@
 
 All notable changes to Frameropia are documented here. Each release's notes are taken from its
 `## [X.Y.Z]` section (release candidates use the section of the version they are a candidate for).
-New entries go under `## [Unreleased]
+New entries go under `## [Unreleased]`.
 
-- Added OOT Compatibility (inherited)
-- Improved MKW Performances (inherited)
-- Added StarFox Compatibility (inherited)
-- Less shader rebuilds (inherited)
-- Changed dir from eden to eglantine (inherited)
-- Overall better performances and fixes (inherited)
+## [Unreleased]
+
+## [0.0.3]
+
+- **Pokémon Pokopia:** flush accelerated Switch 2 image-to-buffer DMA destinations to guest memory before completing the copy, greatly reducing photo corruption. Adapted from notsapinho/Eglantine commit `7dde4f15`.
+- **Verified user testing:** 48/50 photos correct in the initial 50-photo series; sporadic corruption, especially the first photo after startup, remains a known issue.
+- **New Frameropia logo:** add an orange-gradient F logo with transparent background for the README, Qt resources, and the Windows application icon.
+- **README and documentation:** improve presentation, navigation, testing guidance and transparent patch notes.
+- **Safer release scope:** exclude rejected experiments #16, #18, #19 and #20, which did not pass gameplay testing.
+- **Compatibility:** preserve existing executable names and user-data/save directories. No claim of achieving the 60 FPS performance seen in notsapinho build 24.
 
 ## [0.0.2]
 
