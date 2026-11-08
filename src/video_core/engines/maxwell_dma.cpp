@@ -4,6 +4,7 @@
 // SPDX-FileCopyrightText: Copyright 2018 yuzu Emulator Project
 // SPDX-License-Identifier: GPL-2.0-or-later
 
+#include <atomic>
 #include <cstdlib>
 #include "common/algorithm.h"
 #include "common/assert.h"
@@ -202,8 +203,38 @@ void MaxwellDMA::CopyBlockLinearToPitch() {
     DMA::ImageCopy copy_info{};
     copy_info.length_x = regs.line_length_in;
     copy_info.length_y = regs.line_count;
+    // Diagnostic-only instrumentation for sporadic first-photo and vertically wrapped copies.
+    // Does not change accelerated/CPU fallback behavior or GPU/CPU synchronization.
+    // Enable with FRAMEROPIA_PHOTO_DMA_TRACE=1 and inspect eden_log.txt.
+    static const bool trace_photo_dma = [] {
+        const char* env = std::getenv("FRAMEROPIA_PHOTO_DMA_TRACE");
+        return env != nullptr && env[0] == '1';
+    }();
+    // Trace large Switch 2 block-linear -> pitch DMA copies; don't assume photo pitch/size.
+    const bool candidate = trace_photo_dma &&
+                           Tegra::g_nx2_ampere.load(std::memory_order_relaxed) &&
+                           regs.line_count >= 256 && regs.line_length_in >= 1024;
+    static std::atomic<u32> photo_trace_count{};
+    const u32 trace_num = candidate
+                              ? photo_trace_count.fetch_add(1, std::memory_order_relaxed) + 1
+                              : 0;
+    if (trace_num != 0 && trace_num <= 96) {
+        LOG_INFO(HW_GPU,
+                 "Frameropia DMA candidate {}: src={:#x} dst={:#x} length={} rows={} "
+                 "pitch_in={} pitch_out={} src_origin=({}, {}) src_size=({}, {}) "
+                 "src_block_height={} dst_pitch={}",
+                 trace_num, static_cast<GPUVAddr>(regs.offset_in),
+                 static_cast<GPUVAddr>(regs.offset_out), regs.line_length_in, regs.line_count,
+                 regs.pitch_in, regs.pitch_out, regs.src_params.origin.x,
+                 regs.src_params.origin.y, regs.src_params.width, regs.src_params.height,
+                 regs.src_params.block_size.height, dst_operand.pitch);
+    }
     auto& accelerate = rasterizer->AccessAccelerateDMA();
     if (accelerate.ImageToBuffer(copy_info, src_operand, dst_operand)) {
+        if (trace_num != 0 && trace_num <= 96) {
+            LOG_INFO(HW_GPU, "Frameropia DMA candidate {}: accelerated, flush={}", trace_num,
+                     Tegra::g_nx2_ampere.load(std::memory_order_relaxed));
+        }
         // Switch 2 photo captures may read the DMA destination on the CPU before an
         // accelerated GPU image-to-buffer copy reaches guest memory. Flush the copied
         // region before DMA completion to avoid encoding stale rows.
