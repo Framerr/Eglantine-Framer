@@ -21,9 +21,6 @@
 
 Frameropia is an independent open-source fork of [Eglantine](https://github.com/Djihads80/Eglantine), building on the work of Eden, yuzu and their contributors. It currently prioritizes practical Pokémon Pokopia compatibility testing, while preserving the upstream project's broader functionality.
 
-> [!WARNING]
-> **Experimental software.** Compatibility, image capture, frame rate and rendering are not guaranteed. The photo readback fix in v0.0.3 greatly improves reliability in user testing but **does not eliminate corruption**, especially on early captures after startup.
-
 ## Download and run
 
 1. Get the Windows archive from [Releases](https://github.com/Framerr/Frameropia/releases).
