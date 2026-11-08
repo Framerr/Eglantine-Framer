@@ -7,6 +7,8 @@ on:
     branches: [nx2]
     paths:
       - VERSION
+      - dist/frameropia-logo.png
+      - dist/frameropia.ico
       - .github/workflows/fork-windows-release.yml
   workflow_dispatch:
 
@@ -44,6 +46,17 @@ jobs:
           regex='^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$'
           [[ "$version" =~ $regex ]] || {
             echo "This workflow only publishes numbered stable versions: $version" >&2
+            exit 1
+          }
+          # Guard against corrupt/truncated binary icon uploads before publishing.
+          actual_logo=$(git hash-object dist/frameropia-logo.png)
+          actual_icon=$(git hash-object dist/frameropia.ico)
+          [[ "$actual_logo" == "c21f9b804fc6364c454a393e21428f5f79395bad" ]] || {
+            echo "Invalid Frameropia logo blob: $actual_logo" >&2
+            exit 1
+          }
+          [[ "$actual_icon" == "1b87ff356fabf6c0f73d110f15d1249975fabb30" ]] || {
+            echo "Invalid Frameropia Windows icon blob: $actual_icon" >&2
             exit 1
           }
           notes=$(bash tools/ci/changelog-section.sh "$version")
