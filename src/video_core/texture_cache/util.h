@@ -104,6 +104,10 @@ void ExecuteUnswizzlePlan(Tegra::MemoryManager& gpu_memory, const UnswizzlePlan&
     std::span<const u8> input, std::span<u8> output);
 
 /// Read a linear guest image directly into the staging destination.
+/// Returns copy metadata for a linear image without reading guest memory.
+[[nodiscard]] boost::container::small_vector<BufferImageCopy, 16> LinearImageCopies(
+    const ImageInfo& info, size_t guest_size_bytes);
+
 [[nodiscard]] boost::container::small_vector<BufferImageCopy, 16> UnswizzleLinearImage(
     Tegra::MemoryManager& gpu_memory, GPUVAddr gpu_addr, const ImageInfo& info,
     size_t guest_size_bytes, std::span<u8> output);
