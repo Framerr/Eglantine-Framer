@@ -24,17 +24,6 @@ Frameropia is an independent open-source fork of [Eglantine](https://github.com/
 > [!WARNING]
 > **Experimental software.** Compatibility, image capture, frame rate and rendering are not guaranteed. The photo readback fix in v0.0.3 greatly improves reliability in user testing but **does not eliminate corruption**, especially on early captures after startup.
 
-## What's new in v0.0.3
-
-| Area | Change |
-| :-- | :-- |
-| 📸 **Pokopia photos** | Flush accelerated image-to-buffer DMA readbacks to guest memory before completing the transfer. |
-| 🎨 **Branding** | New transparent orange **F** logo for this README and the Windows executable/Qt icon. |
-| 🧪 **Testing** | Keep the validated readback change; exclude experimental patches that caused regressions. |
-| 📝 **Documentation** | Clearer project overview and complete [technical and plain-English patch notes](docs/releases/v0.0.3.md). |
-
-**Test evidence:** with the DMA fix, one initial set of 50 Pokopia photos yielded **48 correct and 2 corrupt**. Follow-up tests revealed remaining cold-start failures (the first photo failed in three independent startups) and occasional image displacement. These are **known issues**, not fixed in v0.0.3. See [issue #14](https://github.com/Framerr/Frameropia/issues/14).
-
 ## Download and run
 
 1. Get the Windows archive from [Releases](https://github.com/Framerr/Frameropia/releases).
