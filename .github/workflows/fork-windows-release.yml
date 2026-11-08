@@ -90,6 +90,6 @@ jobs:
       kind: stable
       tag: ${{ needs.prepare.outputs.tag }}
       title: Frameropia ${{ needs.prepare.outputs.tag }} (test build)
-      prerelease: true
+      prerelease: false
       sha: ${{ needs.prepare.outputs.sha }}
       branch: nx2
